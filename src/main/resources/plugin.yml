@@ -1,0 +1,8 @@
+name: Gens
+version: '${project.version}'
+main: org.dafy.gens.Gens
+api-version: 1.19
+author: Dafydd
+depend:
+  - Vault
+  - NBTAPI

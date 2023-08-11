@@ -10,8 +10,7 @@ import org.bukkit.inventory.ItemStack;
 @Setter
 @Data
 public class Generator {
-    private  Location genLocation;
-    private String genName;
+    private Location genLocation;
     private ItemStack genItem;
     private ItemStack dropItem;
     private int price;

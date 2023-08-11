@@ -1,4 +1,4 @@
-package org.dafy.gens.Game.Block;
+package org.dafy.gens.game.block;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

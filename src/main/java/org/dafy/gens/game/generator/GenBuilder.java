@@ -1,4 +1,4 @@
-package org.dafy.gens.Game.Generator;
+package org.dafy.gens.game.generator;
 
 import lombok.Getter;
 import org.bukkit.ChatColor;
@@ -82,9 +82,10 @@ public class GenBuilder {
     public Generator build() {
         Generator generator = new Generator();
         generator.setGenItem(buildItem(genMaterial, genName, genLore));
-        generator.setDelay(genDelay);
-        generator.setTier(tier);
         generator.setDropItem(buildItem(dropMaterial, dropName, dropLore));
+        generator.setTier(tier);
+        generator.setDelay(genDelay);
+        generator.setPrice(price);
         return generator;
     }
 

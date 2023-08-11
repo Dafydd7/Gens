@@ -1,12 +1,10 @@
-package org.dafy.gens.Game.Generator;
+package org.dafy.gens.game.generator;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.dafy.gens.user.User;
 
 @Getter
 @Setter
@@ -16,7 +14,7 @@ public class Generator {
     private String genName;
     private ItemStack genItem;
     private ItemStack dropItem;
-    private User owner;
+    private int price;
     private int delay;
     private int tier;
 

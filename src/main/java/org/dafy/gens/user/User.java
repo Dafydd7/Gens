@@ -1,10 +1,9 @@
 package org.dafy.gens.user;
 
-import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.dafy.gens.Game.Generator.Generator;
+import org.dafy.gens.game.generator.Generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +19,11 @@ public class User {
     private List<Generator> generators = new ArrayList<>();
 
 
-   public void addPlaced(int amount){
+   public void addPlaced(){
        genLimit -= 1;
        gensPlaced += 1;
    }
-    public void removePlaced(int amount){
+    public void removePlaced(){
         genLimit += 1;
         gensPlaced -= 1;
     }

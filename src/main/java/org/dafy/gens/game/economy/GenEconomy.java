@@ -1,4 +1,4 @@
-package org.dafy.gens.Game.economy;
+package org.dafy.gens.game.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -6,9 +6,9 @@ import org.dafy.gens.Gens;
 
 import java.util.logging.Logger;
 
-public class Eco {
+public class GenEconomy {
     private final Gens plugin;
-    public Eco(Gens plugin){
+    public GenEconomy(Gens plugin){
         this.plugin = plugin;
     }
     private static final Logger log = Logger.getLogger("Minecraft");

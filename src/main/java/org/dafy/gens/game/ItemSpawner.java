@@ -1,8 +1,7 @@
-package org.dafy.gens.Game;
+package org.dafy.gens.game;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.dafy.gens.Game.Generator.Generator;
-import org.dafy.gens.Gens;
+import org.dafy.gens.game.generator.Generator;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

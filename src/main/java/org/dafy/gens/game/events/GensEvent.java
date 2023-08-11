@@ -1,9 +1,7 @@
-package org.dafy.gens.Game.events;
+package org.dafy.gens.game.events;
 
 import org.bukkit.Bukkit;
 import org.dafy.gens.Gens;
-
-import java.util.logging.Level;
 
 public class GensEvent {
     private final Gens plugin;
@@ -48,16 +46,13 @@ public class GensEvent {
     }
     private void startGeneratorTask() {
         switch (activeMode) {
-            case DOUBLE_DROP:
-                // TODO: Perform generator event action for the player in DOUBLE_DROP mode
-                break;
             case SELL_EVENT:
                 // TODO: Perform generator event action for the player in DOUBLE_SELL mode
                 break;
              case UPGRADE_DROP:
                  // TODO: Perform generator event action for the player in UPGRADED_DROP mode
                  break;
-            }
+        }
         Bukkit.getScheduler().runTaskLater(plugin, this::stopEvent, 20 * 60);
     }
 

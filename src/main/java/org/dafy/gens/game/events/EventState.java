@@ -1,4 +1,4 @@
-package org.dafy.gens.Game.events;
+package org.dafy.gens.game.events;
 
 import java.util.Arrays;
 import java.util.Collections;

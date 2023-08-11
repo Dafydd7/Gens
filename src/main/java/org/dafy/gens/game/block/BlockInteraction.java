@@ -1,13 +1,11 @@
-package org.dafy.gens.Game.Block;
+package org.dafy.gens.game.block;
 
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.dafy.gens.Game.Generator.Generator;
+import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.Gens;
 import org.dafy.gens.user.User;
 
@@ -37,20 +35,6 @@ public class BlockInteraction implements Listener {
             e.getPlayer().sendMessage("You do not own this generator.");
             return;
         }
-        plugin.getGenUpgrade().open(e.getPlayer(),matchingGenerator);
-    }
-    @EventHandler
-    public void onGenBreak(BlockBreakEvent e){
-        if(e.isCancelled()) return;
-        if (blockManager.hasBlockPersistentData(e.getBlock(), BlockManager.GENERATOR_KEY)) {
-            e.setCancelled(true);
-        }
-    }
-    @EventHandler
-    public void onGenBreak(BlockExplodeEvent e) {
-        if (e.isCancelled()) return;
-        if (blockManager.hasBlockPersistentData(e.getBlock(), BlockManager.GENERATOR_KEY)) {
-            e.setCancelled(true);
-        }
+        plugin.getUpgradeManager().open(e.getPlayer(),matchingGenerator);
     }
 }

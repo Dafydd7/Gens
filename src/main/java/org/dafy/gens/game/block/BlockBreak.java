@@ -13,8 +13,7 @@ public class BlockBreak implements Listener {
     @EventHandler
     public void onGenBreak(BlockBreakEvent e) {
         if (e.isCancelled()) return;
-        if (blockManager.hasBlockPersistentData(e.getBlock(), BlockManager.GENERATOR_KEY)) {
+        if (blockManager.hasBlockPersistentData(e.getBlock(), BlockManager.GENERATOR_KEY))
             e.setCancelled(true);
-        }
     }
 }

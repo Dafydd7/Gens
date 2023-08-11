@@ -10,10 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.dafy.gens.commands.*;
-import org.dafy.gens.game.block.BlockInteraction;
-import org.dafy.gens.game.block.BlockManager;
-import org.dafy.gens.game.block.BlockPlace;
-import org.dafy.gens.game.block.CancelPiston;
+import org.dafy.gens.game.block.*;
 import org.dafy.gens.game.ConnectionListener;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.upgrader.GenUpgrader;
@@ -93,7 +90,9 @@ public final class Gens extends JavaPlugin {
                 new ConnectionListener(this),
                 new UpgradeManager(),
                 new GenShop(this),
-                new GenUpgrader(this)
+                new GenUpgrader(this),
+                new BlockExplode(this),
+                new BlockBreak(this)
         );
         listeners.forEach(listener -> pm.registerEvents(listener, this));
     }

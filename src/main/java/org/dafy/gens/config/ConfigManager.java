@@ -12,6 +12,8 @@ import org.dafy.gens.user.UserManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 public class ConfigManager {
@@ -58,27 +60,43 @@ public class ConfigManager {
         }
     }
 
-    public void loadUserConfig(File file, UUID uuid) {
-        FileConfiguration userYaml = YamlConfiguration.loadConfiguration(file);
-        User user = new User(uuid);
-        ConfigurationSection section = userYaml.getConfigurationSection("User." + uuid);
-        if (section == null) return;
+    public void loadUserConfig(UUID uuid, Consumer<User> userResult, boolean cache) {
 
-        user.setGensPlaced(section.getInt(ConfigKeys.GEN_PLACED));
-        user.setGenLimit(section.getInt(ConfigKeys.GEN_LIMIT));
+        CompletableFuture<User> future = CompletableFuture.supplyAsync(() -> {
+            User user = new User(uuid);
 
-        ConfigurationSection genSection = section.getConfigurationSection("Generators.");
-        if (genSection != null) {
-            for (String key : genSection.getKeys(false)) {
-                ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
-                if (genSubSection == null) continue;
-                Location location = (Location) genSubSection.get("Location");
-                int tier = genSubSection.getInt("Tier");
-                Generator generator = genManager.createGenerator(location,tier);
-                user.getGenerators().add(generator);
-                plugin.getItemSpawner().addActiveGenerator(generator);
+            File file = new File(plugin.getDataFolder() + "/users/" + uuid.toString() + ".yml");
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    plugin.getLogger().log(Level.WARNING, "Unable to create user file: " + uuid);
+                    return null;
                 }
             }
-        userManager.cacheUser(user);
+            FileConfiguration userYaml = YamlConfiguration.loadConfiguration(file);
+            ConfigurationSection section = userYaml.getConfigurationSection("User." + uuid);
+            if (section == null) return null;
+
+            user.setGensPlaced(section.getInt(ConfigKeys.GEN_PLACED));
+            user.setGenLimit(section.getInt(ConfigKeys.GEN_LIMIT));
+
+            ConfigurationSection genSection = section.getConfigurationSection("Generators.");
+            if (genSection != null) {
+                for (String key : genSection.getKeys(false)) {
+                    ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
+                    if (genSubSection == null) continue;
+                    Location location = (Location) genSubSection.get("Location");
+                    int tier = genSubSection.getInt("Tier");
+                    Generator generator = genManager.createGenerator(location,tier);
+                    user.getGenerators().add(generator);
+                    plugin.getItemSpawner().addActiveGenerator(generator);
+                }
+            }
+            if(cache) userManager.cacheUser(user);
+            return user;
+        });
+        if(userResult != null) future.thenAccept(userResult);
     }
 }

@@ -16,12 +16,7 @@ public class UserData {
     }
 
     public void loadOrCreateUser(UUID uuid) {
-        File file = new File(plugin.getDataFolder() + "/users/" + uuid.toString() + ".yml");
-        if (!file.exists()) {
-            createUser(file, uuid);
-        } else {
-            plugin.getConfigManager().loadUserConfig(file, uuid);
-        }
+        plugin.getConfigManager().loadUserConfig(uuid, null, true);
     }
 
     public void saveUser(UUID uuid) {
@@ -35,18 +30,5 @@ public class UserData {
 
     public void saveAllUsers() {
         plugin.getUserManager().getUserKeys().forEach(this::saveUser);
-    }
-
-    private void createUser(File file, UUID uuid) {
-        User user = new User(uuid);
-        user.setGenLimit(40);
-        user.setGensPlaced(0);
-        plugin.getUserManager().cacheUser(user);
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Unable to create user file: " + uuid);
-        }
     }
 }

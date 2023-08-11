@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.dafy.gens.bskyblock.IslandReset;
+import org.dafy.gens.bskyblock.IslandDelete;
 import org.dafy.gens.commands.*;
 import org.dafy.gens.game.block.*;
 import org.dafy.gens.game.ConnectionListener;
@@ -100,7 +100,7 @@ public final class Gens extends JavaPlugin {
                 new BlockBreak(this),
                 new CloseUpgrader(this),
                 new BlockBurn(this),
-                new IslandReset()
+                new IslandDelete(this)
         );
         listeners.forEach(listener -> pm.registerEvents(listener, this));
     }

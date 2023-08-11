@@ -13,9 +13,11 @@ public class UserManager {
     public void removeUser(UUID uuid){
         userHashMap.remove(uuid);
     }
+
     public User getUser(UUID uuid){
         return userHashMap.get(uuid);
     }
+
     public Set<UUID> getUserKeys(){
         return userHashMap.keySet();
     }

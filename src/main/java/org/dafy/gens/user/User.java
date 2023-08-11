@@ -14,8 +14,8 @@ import java.util.UUID;
 @Setter
 public class User {
     private final UUID uuid;
-    private int gensPlaced;
-    private int genLimit;
+    private int gensPlaced = 0;
+    private int genLimit = 40;
     private List<Generator> generators = new ArrayList<>();
 
 
@@ -28,7 +28,9 @@ public class User {
         gensPlaced -= 1;
     }
 
-    public void addGenerator(Generator generator){
+    public void addGenerator(Generator generator) {
+
+
         generators.add(generator);
     }
     public void removeGenerator(Generator generator){

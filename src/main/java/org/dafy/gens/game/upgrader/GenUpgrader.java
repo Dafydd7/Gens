@@ -45,7 +45,7 @@ public class GenUpgrader implements Listener {
             return;
         }
         if (clickedItem.equals(upgradeManager.getRemoveItem())) {
-            genManager.removeGenerator(generator, player);
+            genManager.removeGenerator(generator, player.getUniqueId());
             player.closeInventory();
             return;
         }

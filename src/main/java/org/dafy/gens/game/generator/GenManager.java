@@ -10,6 +10,7 @@ import org.dafy.gens.user.User;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class GenManager {
     private final Gens plugin;
@@ -63,6 +64,7 @@ public class GenManager {
         generator.setDelay(template.getDelay());
         return generator;
     }
+
     public void updateGenerator(Generator generator, Player player) {
         Location location = generator.getGenLocation();
         if (location == null) return;
@@ -77,11 +79,11 @@ public class GenManager {
         user.addAndRemove(generator, newGenerator);
     }
 
-    public void removeGenerator(Generator generator, Player player) {
+    public void removeGenerator(Generator generator, UUID uuid) {
         Location location = generator.getGenLocation();
         if (location == null) return;
 
-        User user = plugin.getUserManager().getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(uuid);
         if (user == null) return;
 
         itemSpawner.removeActiveGenerator(generator);

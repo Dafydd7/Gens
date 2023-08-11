@@ -14,6 +14,5 @@ public class BlockExplode implements Listener {
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.isCancelled()) return;
         e.blockList().removeIf(block -> blockManager.hasBlockPersistentData(block, BlockManager.GENERATOR_KEY));
-        System.out.println("Entity Event");
     }
 }

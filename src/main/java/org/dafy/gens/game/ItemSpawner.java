@@ -16,6 +16,11 @@ public class ItemSpawner extends BukkitRunnable {
     @Override
     public void run() {
         for (Generator generator : activeGenerators) {
+            //Double check that the generator still exists.
+            if(!generator.getGenLocation().getBlock().getType().isBlock()){
+                removeActiveGenerator(generator);
+                continue;
+            }
             generator.dropItemNaturally();
         }
     }

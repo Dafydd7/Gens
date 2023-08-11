@@ -10,14 +10,6 @@ Generators:
       - "&7Tier 1 generator."
       - ""
       - "&eClick to buy!"
-    drop:
-      material: WHEAT
-      display:
-       name: "&eWheat"
-       lore:
-        - "&eGenerator wheat"
-        - "&eObtained from Tier 1 Generator"
-        - "Sell via &a/sell&r command!"
   coal:
     tier: 2
     price: 500
@@ -29,15 +21,6 @@ Generators:
        - "&7Tier 2 generator."
        - ""
        - "&eClick to buy!"
-    drop:
-     price: 500
-     material: COAL
-     display:
-       name: "&eCoal"
-       lore:
-         - "&7Coal wheat"
-         - "&7Obtained from Tier 2 Generator"
-         - "Sell via &a/sell&r command!"
   iron:
     tier: 3
     price: 1000
@@ -49,15 +32,6 @@ Generators:
         - "&7Tier 3 generator."
         - ""
         - "&eClick to buy!"
-    drop:
-      price: 500
-      material: IRON_INGOT
-      display:
-        name: "&eIron"
-        lore:
-          - "&7Iron Ingot"
-          - "&7Obtained from Tier 3 Generator"
-          - "Sell via &a/sell&r command!"
   gold:
     tier: 4
     price: 2000
@@ -69,15 +43,6 @@ Generators:
         - "&7Tier 4 generator."
         - ""
         - "&eClick to buy!"
-    drop:
-      price: 500
-      material: GOLD_INGOT
-      display:
-        name: "&eGold"
-        lore:
-          - "&7Gold Ingot"
-          - "&7Obtained from Tier 4 Generator"
-          - "Sell via &a/sell&r command!"
   diamond:
     tier: 5
     price: 4000
@@ -89,15 +54,6 @@ Generators:
         - "&bTier 5 generator."
         - ""
         - "&eClick to buy!"
-    drop:
-      price: 500
-      material: DIAMOND
-      display:
-        name: "&bDiamond"
-        lore:
-          - "&bDiamond Ore"
-          - "&bObtained from Tier 5 Generator"
-          - "Sell via &a/sell&r command!"
   emerald:
     tier: 6
     price: 8000
@@ -109,12 +65,65 @@ Generators:
         - "&aTier 6 generator."
         - ""
         - "&eClick to buy!"
-    drop:
-      price: 500
-      material: EMERALD
-      display:
-        name: "&aEmerald"
-        lore:
-          - "&aEmerald Ore"
-          - "&aObtained from Tier 6 Generator"
-          - "Sell via &a/sell&r command!"
+# Below is a list of all generator drops. Please ensure that the drop matches the correct generator tier!
+Drops:
+  wheat:
+    tier: 1
+    price: 50
+    material: WHEAT
+    display:
+      name: "&eWheat"
+      lore:
+        - "&eGenerator wheat"
+        - "&eObtained from Tier 1 Generator"
+        - "Sell via &a/sell&r command!"
+  coal:
+    tier: 2
+    price: 100
+    material: COAL
+    display:
+      name: "&eCoal"
+      lore:
+        - "&7Coal"
+        - "&7Obtained from Tier 2 Generator"
+        - "Sell via &a/sell&r command!"
+  iron:
+    tier: 3
+    price: 200
+    material: IRON_INGOT
+    display:
+      name: "&eIron"
+      lore:
+        - "&7Iron Ingot"
+        - "&7Obtained from Tier 3 Generator"
+        - "Sell via &a/sell&r command!"
+  gold:
+    tier: 4
+    price: 300
+    material: GOLD_INGOT
+    display:
+      name: "&eGold"
+      lore:
+        - "&7Gold Ingot"
+        - "&7Obtained from Tier 4 Generator"
+        - "Sell via &a/sell&r command!"
+  diamond:
+    tier: 5
+    price: 400
+    material: DIAMOND
+    display:
+      name: "&bDiamond"
+      lore:
+        - "&bDiamond Ore"
+        - "&bObtained from Tier 5 Generator"
+        - "Sell via &a/sell&r command!"
+  emerald:
+    tier: 6
+    price: 500
+    material: EMERALD
+    display:
+      name: "&aEmerald"
+      lore:
+        - "&aEmerald Ore"
+        - "&aObtained from Tier 6 Generator"
+        - "Sell via &a/sell&r command!"

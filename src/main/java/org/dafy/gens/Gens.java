@@ -13,6 +13,8 @@ import org.dafy.gens.commands.*;
 import org.dafy.gens.game.block.*;
 import org.dafy.gens.game.ConnectionListener;
 import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.generator.ItemCreator;
+import org.dafy.gens.game.upgrader.CloseUpgrader;
 import org.dafy.gens.game.upgrader.GenUpgrader;
 import org.dafy.gens.game.upgrader.UpgradeManager;
 import org.dafy.gens.game.ItemSpawner;
@@ -34,11 +36,12 @@ public final class Gens extends JavaPlugin {
     private GenEconomy genEconomy;
     private GensEvent gensEvent;
     private ItemSpawner itemSpawner;
+    private UserData userTEMP;
+    private ItemCreator itemCreator;
+
     private BlockManager blockManager;
     private UserManager userManager;
-    private UserData userTEMP;
     private ConfigManager configManager;
-
     private GenManager genManager;
     private UpgradeManager upgradeManager;
     private ShopManager shopManager;
@@ -53,10 +56,11 @@ public final class Gens extends JavaPlugin {
         itemSpawner = new ItemSpawner();
         taskId = itemSpawner.runTaskTimer(this, 0, 100).getTaskId();
 
+        genManager = new GenManager(this);
         shopManager = new ShopManager(this);
 
-        genManager = new GenManager(this);
-        genManager.initGenBuilder();
+        itemCreator = new ItemCreator(this);
+        itemCreator.initBuilders();
 
         userManager = new UserManager();
         userTEMP = new UserData(this);
@@ -86,13 +90,14 @@ public final class Gens extends JavaPlugin {
         List<Listener> listeners = Arrays.asList(
                 new BlockPlace(this),
                 new BlockInteraction(this),
-                new CancelPiston(this),
+                new BlockPiston(this),
                 new ConnectionListener(this),
                 new UpgradeManager(),
                 new GenShop(this),
                 new GenUpgrader(this),
                 new BlockExplode(this),
-                new BlockBreak(this)
+                new BlockBreak(this),
+                new CloseUpgrader(this)
         );
         listeners.forEach(listener -> pm.registerEvents(listener, this));
     }

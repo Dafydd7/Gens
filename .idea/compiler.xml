@@ -10,8 +10,5 @@
         <module name="Gens" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Gens" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

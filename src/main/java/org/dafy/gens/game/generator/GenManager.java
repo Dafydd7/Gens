@@ -1,50 +1,33 @@
 package org.dafy.gens.game.generator;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.dafy.gens.game.ItemSpawner;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.shop.ShopManager;
 import org.dafy.gens.user.User;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class GenManager {
     private final Gens plugin;
-    private final ShopManager shopManager;
     private final ItemSpawner itemSpawner;
 
     public GenManager(Gens plugin) {
         this.itemSpawner = plugin.getItemSpawner();
-        this.shopManager = plugin.getShopManager();
         this.plugin = plugin;
     }
-
-
     private final Map<Integer, Generator> tierToGeneratorMap = new HashMap<>();
-
-    public void initGenBuilder() {
-        FileConfiguration config = this.plugin.getConfig();
-        ConfigurationSection rewardsSection = config.getConfigurationSection("Generators.");
-
+    public void clearGenerators(){
         tierToGeneratorMap.clear();
-        shopManager.clearSellableItems();
-
-        if (rewardsSection == null) {
-            plugin.getLogger().log(Level.WARNING, "Unable to initialize generator template - data null");
-            return;
-        }
-
-        rewardsSection.getKeys(false).forEach(key -> {
-            Generator genBuilder = new GenBuilder(rewardsSection.getConfigurationSection(key)).build();
-            shopManager.addSellableItem(genBuilder.getDropItem(),genBuilder.getPrice());
-            tierToGeneratorMap.put(genBuilder.getTier(), genBuilder);
-        });
+    }
+    public void setDropItem(int tier, ItemStack dropItem){
+        tierToGeneratorMap.get(tier).setDropItem(dropItem);
+    }
+    public void addGenerator(int tier,Generator generator){
+        tierToGeneratorMap.put(tier,generator);
     }
 
     public int genCount(){
@@ -53,6 +36,9 @@ public class GenManager {
 
     public boolean isMaxTier(int tier) {
         return tier == genCount();
+    }
+    public int getPrice(int tier) {
+        return genFromTier(tier).getPrice();
     }
 
     public Collection<Generator> getGenerators() {

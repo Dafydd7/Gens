@@ -1,11 +1,11 @@
 package org.dafy.gens.game.shop;
 
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.dafy.gens.Gens;
-
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.Generator;
 

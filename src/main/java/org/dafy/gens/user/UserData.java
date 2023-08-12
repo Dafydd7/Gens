@@ -16,7 +16,7 @@ public class UserData {
     }
 
     public void loadOrCreateUser(UUID uuid) {
-        plugin.getConfigManager().loadUserConfig(uuid, null, true);
+        plugin.getConfigManager().loadUserConfig(uuid,  true);
     }
 
     public void saveUser(UUID uuid) {

@@ -64,7 +64,7 @@ public class BlockPlace implements Listener {
         World playerWorld = player.getWorld();
         Island island = islandsManager.getIsland(playerWorld, islandUser);
 
-        generator.setIsland(island);
+        generator.setIslandUUID(island.getUniqueId());
         // Set the persistent data container for this block.
         blockManager.addBlockPersistentData(e.getBlock(), "Generator", tier);
         // Adds +1 to the gensPlaced, and genLimit amount.

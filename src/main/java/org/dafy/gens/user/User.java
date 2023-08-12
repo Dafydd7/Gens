@@ -29,10 +29,9 @@ public class User {
     }
 
     public void addGenerator(Generator generator) {
-
-
         generators.add(generator);
     }
+
     public void removeGenerator(Generator generator){
         generators.remove(generator);
     }

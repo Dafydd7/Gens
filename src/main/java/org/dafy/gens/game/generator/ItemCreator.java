@@ -42,7 +42,6 @@ public class ItemCreator {
              GenDrop genDrop = new DropBuilder(dropSection.getConfigurationSection(key)).build();
              ItemStack genItem = genDrop.getDropItem();
              genManager.setDropItem(genDrop.getTier(),genItem);
-             System.out.printf("Price: " + genDrop.getPrice());
              shopManager.addSellableItem(genDrop.getDropItem(), genDrop.getPrice());
         });
     }

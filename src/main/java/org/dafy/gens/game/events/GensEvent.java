@@ -1,5 +1,6 @@
 package org.dafy.gens.game.events;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.dafy.gens.Gens;
 
@@ -8,6 +9,7 @@ public class GensEvent {
     public GensEvent(Gens plugin){
         this.plugin = plugin;
     }
+    @Getter
     private EventState activeMode = EventState.INACTIVE;
     private int modeTaskId;
 
@@ -59,9 +61,11 @@ public class GensEvent {
     private void setActiveMode(EventState newMode) {
         activeMode = newMode;
     }
-    public EventState getActiveMode() {
-        return activeMode;
+
+    public boolean isSellMode(){
+        return activeMode.equals(EventState.SELL_EVENT);
     }
+
     public void stopModeTimer() {
         Bukkit.getScheduler().cancelTask(modeTaskId);
         setActiveMode(EventState.INACTIVE);

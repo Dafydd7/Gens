@@ -1,4 +1,5 @@
 package org.dafy.gens.game.generator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -77,6 +78,17 @@ public class GenManager {
         location.getBlock().setType(newGenerator.getGenItem().getType());
         itemSpawner.addAndRemoveGen(generator, newGenerator);
         user.addAndRemove(generator, newGenerator);
+    }
+
+    //Method called when island is deleted/reset, as all blocks will be deleted anyway.
+    public void deleteIslandGenerator(Generator generator, UUID uuid) {
+        User user = plugin.getUserManager().getUser(uuid);
+        if (user == null) return;
+
+        itemSpawner.removeActiveGenerator(generator);
+        user.removeGenerator(generator);
+        user.removePlaced();
+        plugin.getBlockManager().removeBlockPersistentData(generator.getGenLocation().getBlock(),"Generator");
     }
 
     public void removeGenerator(Generator generator, UUID uuid) {

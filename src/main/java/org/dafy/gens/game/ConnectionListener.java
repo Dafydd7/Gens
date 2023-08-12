@@ -13,7 +13,7 @@ public class ConnectionListener implements Listener {
 
     private final UserData userData;
     public ConnectionListener(Gens plugin){
-        this.userData = plugin.getUserTEMP();
+        this.userData = plugin.getUserData();
     }
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

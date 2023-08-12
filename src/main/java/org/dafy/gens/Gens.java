@@ -15,6 +15,7 @@ import org.dafy.gens.game.block.*;
 import org.dafy.gens.game.ConnectionListener;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.ItemCreator;
+import org.dafy.gens.game.sellwand.Sellwand;
 import org.dafy.gens.game.upgrader.CloseUpgrader;
 import org.dafy.gens.game.upgrader.GenUpgrader;
 import org.dafy.gens.game.upgrader.UpgradeManager;
@@ -37,7 +38,7 @@ public final class Gens extends JavaPlugin {
     private GenEconomy genEconomy;
     private GensEvent gensEvent;
     private ItemSpawner itemSpawner;
-    private UserData userTEMP;
+    private UserData userData;
     private ItemCreator itemCreator;
 
     private BlockManager blockManager;
@@ -54,6 +55,9 @@ public final class Gens extends JavaPlugin {
         genEconomy = new GenEconomy(this);
         genEconomy.initEconomy();
 
+        gensEvent = new GensEvent(this);
+        gensEvent.init();
+
         itemSpawner = new ItemSpawner();
         taskId = itemSpawner.runTaskTimer(this, 0, 100).getTaskId();
 
@@ -64,12 +68,9 @@ public final class Gens extends JavaPlugin {
         itemCreator.initBuilders();
 
         userManager = new UserManager();
-        userTEMP = new UserData(this);
+        userData = new UserData(this);
 
         configManager = new ConfigManager(this);
-
-        gensEvent = new GensEvent(this);
-        gensEvent.init();
 
         blockManager = new BlockManager();
 
@@ -82,7 +83,7 @@ public final class Gens extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        CompletableFuture.runAsync(()->userTEMP.saveAllUsers());
+        CompletableFuture.runAsync(()-> userData.saveAllUsers());
         gensEvent.stopModeTimer();
         Bukkit.getScheduler().cancelTask(taskId);
     }
@@ -100,7 +101,8 @@ public final class Gens extends JavaPlugin {
                 new BlockBreak(this),
                 new CloseUpgrader(this),
                 new BlockBurn(this),
-                new IslandDelete(this)
+                new IslandDelete(this),
+                new Sellwand(this)
         );
         listeners.forEach(listener -> pm.registerEvents(listener, this));
     }

@@ -56,6 +56,7 @@ public class ShopManager {
         ItemStack[] items = inventory.getContents();
         int sellAmount = 0;
         for (ItemStack item: items) {
+            if(item == null || item.getType().isAir()) continue;
             if(!containsSellItem(item)) {
                 continue;
             }

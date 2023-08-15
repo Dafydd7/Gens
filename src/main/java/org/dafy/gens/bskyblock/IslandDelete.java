@@ -13,6 +13,7 @@ import org.dafy.gens.user.UserManager;
 import world.bentobox.bentobox.api.events.island.IslandResettedEvent;
 import world.bentobox.bentobox.api.events.team.TeamKickEvent;
 import world.bentobox.bentobox.api.events.team.TeamLeaveEvent;
+import world.bentobox.bentobox.api.events.team.TeamSetownerEvent;
 import world.bentobox.bentobox.database.objects.Island;
 
 import java.util.Set;
@@ -22,14 +23,12 @@ public class IslandDelete implements Listener {
 
     private final GenManager genManager;
     private final UserManager userManager;
-    private final ConfigManager configManager;
     private final Gens plugin;
 
     public IslandDelete(Gens plugin) {
         this.plugin = plugin;
         userManager = plugin.getUserManager();
         genManager = plugin.getGenManager();
-        configManager = plugin.getConfigManager();
     }
 
     @EventHandler
@@ -58,6 +57,17 @@ public class IslandDelete implements Listener {
         deletePlayerGenerators(island.getUniqueId(), leftPlayer);
     }
 
+    @EventHandler
+    public void onTeamTransfer(TeamSetownerEvent event) {
+        Island island = event.getIsland();
+        UUID newOwner = event.getOwner();
+        UUID oldOwner = event.getOldOwner();
+        //Return early if null; this event is triggered by island reset.
+        if(newOwner == null) return;
+        UUID leftPlayer = event.getPlayerUUID();
+        deletePlayerGenerators(island.getUniqueId(), leftPlayer);
+    }
+
     private void deleteIslandGenerators(String islandID, Set<UUID>members) {
         if(members.isEmpty()) return;
         for (UUID member:members) {
@@ -74,17 +84,6 @@ public class IslandDelete implements Listener {
                 if (!generator.getIslandUUID().equals(islandUUID)) continue;
                 Bukkit.getScheduler().runTask(plugin, () -> genManager.deleteIslandGenerator(generator, cachedUser.getUuid()));
             }
-            return;
         }
-        //TODO fix this, so that offline players can be supported.
-        if (!offlinePlayer.hasPlayedBefore()) return;
-        //Otherwise, remove from offlinePlayer.
-        configManager.loadOfflinePlayer(player, user -> {
-            user.getGenerators().stream()
-                    .filter(generator -> generator.getIslandUUID().equals(islandUUID))
-                    .forEach(generator -> {
-                        genManager.deleteIslandGenerator(generator, user.getUuid());
-                    });
-        }, false);
     }
 }

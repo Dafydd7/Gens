@@ -3,7 +3,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.dafy.gens.game.spawner.ItemSpawner;
 import org.dafy.gens.Gens;
 import org.dafy.gens.game.spawner.SpawnerManager;
 import org.dafy.gens.user.User;
@@ -39,7 +38,7 @@ public class GenManager {
     public boolean isMaxTier(int tier) {
         return tier == genCount();
     }
-    public int getPrice(int tier) {
+    public double getPrice(int tier) {
         return genFromTier(tier).getPrice();
     }
 
@@ -106,16 +105,29 @@ public class GenManager {
         plugin.getBlockManager().removeBlockPersistentData(generator.getGenLocation().getBlock(),"Generator");
     }
     public void dropItemNaturally(Generator generator,int amount){
+        if(!delayReady(generator.getDelay())){
+            generator.minusDelay();
+            return;
+        }
         Location location = generator.getGenLocation();
         ItemStack itemStack = generator.getDropItem();
         if(itemStack == null || location == null) return;
         itemStack.setAmount(amount);
         location.getWorld().dropItemNaturally(location,itemStack);
+        generator.setDelay(genFromTier(generator.getTier()).getDelay());
     }
     public void dropUpgradedNaturally(Generator generator){
+        if(!delayReady(generator.getDelay())){
+            generator.minusDelay();
+            return;
+        }
         Location location = generator.getGenLocation();
         if(generator.getDropItem() == null || location == null) return;
         int newTier = Math.min(genCount(), generator.getTier()+1); //Compares the total tier count with the new tier, gets the lowest if newTier > count.
         location.getWorld().dropItemNaturally(location,tierToGeneratorMap.get(newTier).getDropItem());
+        generator.setDelay(genFromTier(generator.getTier()).getDelay());
+    }
+    private boolean delayReady(int delay) {
+        return delay <= 0;
     }
 }

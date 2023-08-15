@@ -44,10 +44,10 @@ public class GensEvent {
     }
 
     private void stopEvent() {
-        // Set the active mode state to INACTIVE; to pause the generator task during mode off time
+        // Set the active mode state to INACTIVE.
         setActiveMode(EventState.INACTIVE);
 
-        // Start the mode selection timer again for the next 15 minutes
+        // Start the mode selection timer again.
         startModeSelectionTimer();
     }
 
@@ -73,10 +73,10 @@ public class GensEvent {
     public String getEventName() {
         switch (activeMode) {
             case UPGRADE_DROP -> {
-                return "Upgrade Drop Event.";
+                return "Upgrade Drop.";
             }
             case DOUBLE_DROP -> {
-                return "Double Drop Event.";
+                return "Double Drop.";
             }
             case SELL_EVENT -> {
                 return "Sell Event.";

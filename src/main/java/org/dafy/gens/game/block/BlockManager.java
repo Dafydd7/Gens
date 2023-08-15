@@ -2,6 +2,7 @@ package org.dafy.gens.game.block;
 
 import de.tr7zw.nbtapi.NBTBlock;
 import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.plugin.NBTAPI;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 

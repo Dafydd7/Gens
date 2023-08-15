@@ -10,6 +10,6 @@ public interface ItemBuilder {
         Material getMaterial(String materialName);
         void setName(String name);
         void setLore(List<String> lore);
-        void setPrice(int price);
+        void setPrice(double price);
         void setTier(int tier);
 }

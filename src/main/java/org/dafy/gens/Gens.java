@@ -67,7 +67,7 @@ public final class Gens extends JavaPlugin {
         gensEvent.init();
 
         itemSpawner = new ItemSpawner(this);
-        taskId = itemSpawner.runTaskTimer(this, 0, 100).getTaskId();
+        taskId = itemSpawner.runTaskTimer(this, 0, 20).getTaskId();
 
         shopManager = new ShopManager(this);
 

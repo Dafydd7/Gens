@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ShopManager {
     private final GenManager genManager;
     private final GensEvent gensEvent;
-    private final HashMap<ItemStack,Integer> sellableItems = new HashMap<>();
+    private final HashMap<ItemStack,Double> sellableItems = new HashMap<>();
     public ShopManager(Gens plugin){
         genManager = plugin.getGenManager();
         gensEvent = plugin.getGensEvent();
@@ -28,15 +28,15 @@ public class ShopManager {
         return sellableItems.keySet().stream().anyMatch(itemStack -> itemStack.isSimilar(sellItem));
     }
 
-    public int getSellPrice(ItemStack itemStack){
-        Optional<Integer> priceOptional = sellableItems.entrySet()
+    public double getSellPrice(ItemStack itemStack){
+        Optional<Double> priceOptional = sellableItems.entrySet()
                 .stream()
                 .filter(entry -> entry.getKey().isSimilar(itemStack))
                 .map(Map.Entry::getValue)
                 .findFirst();
-        return priceOptional.orElse(0);
+        return priceOptional.orElse(0.0);
     }
-    public  void addSellableItem(ItemStack itemStack,int price) {
+    public  void addSellableItem(ItemStack itemStack,double price) {
         sellableItems.put(itemStack,price);
     }
     public  void clearSellableItems() {
@@ -54,7 +54,7 @@ public class ShopManager {
     }
     public void sellAllItems(Player player,Inventory inventory){
         ItemStack[] items = inventory.getContents();
-        int sellAmount = 0;
+        double sellAmount = 0;
         for (ItemStack item: items) {
             if(item == null || item.getType().isAir()) continue;
             if(!containsSellItem(item)) {
@@ -67,7 +67,7 @@ public class ShopManager {
             player.sendMessage("No sellable item(s) were found.");
             return;
         }
-        int doubledAmount = sellAmount * 2;
+        double doubledAmount = sellAmount * 2;
         if (gensEvent.isSellMode()) {
             GenEconomy.getEconomy().depositPlayer(player, doubledAmount);
             player.sendMessage(ChatColor.GREEN + "+$" + doubledAmount);

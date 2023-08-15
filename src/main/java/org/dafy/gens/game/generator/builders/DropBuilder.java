@@ -15,14 +15,14 @@ public class DropBuilder implements ItemBuilder{
     private final Material dropMaterial;
     private String dropName;
     private List<String> dropLore;
-    private int price;
+    private double price;
     private int tier;
 
     public DropBuilder(ConfigurationSection section) {
         this.dropMaterial = getMaterial(section.getString("material", "stone"));
         setName(section.getString("display.name"));
+        setPrice(section.getDouble("price"));
         setLore(section.getStringList("display.lore"));
-        setPrice(section.getInt("price"));
         setTier(section.getInt("tier"));
     }
 
@@ -58,13 +58,13 @@ public class DropBuilder implements ItemBuilder{
         if (lore != null) {
             ListIterator<String> iterator = lore.listIterator();
             while (iterator.hasNext()) {
-                iterator.set(ChatColor.translateAlternateColorCodes('&', iterator.next()));
+                iterator.set(ChatColor.translateAlternateColorCodes('&', iterator.next().replace("%price%",String.valueOf(price))));
             }
             this.dropLore = lore;
         }
     }
     @Override
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

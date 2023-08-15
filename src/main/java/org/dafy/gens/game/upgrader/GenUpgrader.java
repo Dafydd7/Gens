@@ -56,7 +56,7 @@ public class GenUpgrader implements Listener {
         }
 
         int newTier = generator.getTier() +1 ;
-        int genPrice = genManager.getPrice(newTier);
+        double genPrice = genManager.getPrice(newTier);
 
         if (clickedItem.isSimilar(generator.getGenItem()) && economy.has(player,genPrice)) {
             economy.withdrawPlayer(player,genPrice);

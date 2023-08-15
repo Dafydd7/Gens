@@ -14,6 +14,6 @@ public class GenDrop {
     private ItemStack dropItem;
     private String dropName;
     private List<String> dropLore;
-    private int price;
+    private double price;
     private int tier;
 }

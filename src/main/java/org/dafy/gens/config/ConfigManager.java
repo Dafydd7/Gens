@@ -2,9 +2,11 @@ package org.dafy.gens.config;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.dafy.gens.game.block.BlockManager;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.Gens;
@@ -26,12 +28,14 @@ public class ConfigManager {
     private final UserManager userManager;
     private final GenManager genManager;
     private final SpawnerManager spawnerManager;
+    private final BlockManager blockManager;
 
     public ConfigManager(Gens plugin) {
         this.plugin = plugin;
         userManager = plugin.getUserManager();
         genManager = plugin.getGenManager();
         spawnerManager = plugin.getSpawnerManager();
+        blockManager = plugin.getBlockManager();
     }
 
     public void saveUserConfig(File file, UUID uuid) {
@@ -85,7 +89,14 @@ public class ConfigManager {
                     ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
                     if (genSubSection == null) continue;
                     Location location = (Location) genSubSection.get("Location");
-                    if(location == null || location.getBlock().getType().equals(Material.AIR)) continue; // Skip over generator, if location is somehow null, or the block has been removed.
+                    Block block = location.getBlock();
+                    if(block.getType().equals(Material.AIR) || block.isEmpty()) {
+                        genSection.set(key,null); //Deletes the key, as the generator no longer exists.
+                        user.removePlaced(); //Bring back their stats
+                        if(!blockManager.hasBlockPersistentData(block,"Generator")) continue;
+                        blockManager.removeBlockPersistentData(block,"Generator"); //Remove the NBT, so other blocks can now be placed there again.
+                        continue;
+                    } // Skip over generator, if location is somehow null, or the block has been removed.
                     int tier = genSubSection.getInt("Tier");
                     Generator generator = genManager.createGenerator(location, tier);
                     user.getGenerators().add(generator);
@@ -94,39 +105,6 @@ public class ConfigManager {
                 }
             }
             if (cache) userManager.cacheUser(user);
-    }
-
-    //Added this method for now; need changing ;-;
-    public void loadOfflinePlayer(UUID uuid, Consumer<User> userResult, boolean cache) {
-        CompletableFuture<User> future = CompletableFuture.supplyAsync(() -> {
-            User user = new User(uuid);
-
-            File file = new File(plugin.getDataFolder() + "/users/" + uuid.toString() + ".yml");
-
-            FileConfiguration userYaml = YamlConfiguration.loadConfiguration(file);
-            ConfigurationSection section = userYaml.getConfigurationSection("User." + uuid);
-            if (section == null) return null;
-
-            user.setGensPlaced(section.getInt(ConfigKeys.GEN_PLACED));
-            user.setGenLimit(section.getInt(ConfigKeys.GEN_LIMIT));
-
-            ConfigurationSection genSection = section.getConfigurationSection("Generators.");
-            if (genSection != null) {
-                for (String key : genSection.getKeys(false)) {
-                    ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
-                    if (genSubSection == null) continue;
-                    Location location = (Location) genSubSection.get("Location");
-                    int tier = genSubSection.getInt("Tier");
-                    Generator generator = genManager.createGenerator(location, tier);
-                    user.getGenerators().add(generator);
-                    generator.setIslandUUID(genSubSection.getString("Island-UUID"));
-                    spawnerManager.addActiveGenerator(generator);
-                }
-            }
-            if (cache) userManager.cacheUser(user);
-            return user;
-        });
-        if (userResult != null) future.thenAccept(userResult);
     }
 
     public void createUser(File file, User user) {

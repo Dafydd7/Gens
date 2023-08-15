@@ -14,8 +14,12 @@ public class Generator {
     private Location genLocation;
     private ItemStack genItem;
     private ItemStack dropItem;
-    private int price;
+    private double price;
     private int delay;
     private int tier;
     private String islandUUID;
+
+    public void minusDelay(){
+        delay -= 1;
+    }
 }

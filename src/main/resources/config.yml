@@ -15,70 +15,88 @@ Event-Interval: 1
 Generators:
   wheat:
     tier: 1
+    delay: 7
     price: 100
     material: HAY_BLOCK
     display:
      name: "&eWheat Generator"
      lore:
-      - "&eWheat Generator"
-      - "&7Tier 1 generator."
+      - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
       - ""
-      - "&eClick to buy!"
+      - "&7Tier 1 generator."
+      - "&7Price: &a$&f%price%"
+      - ""
+      - "&7Delay: &f%delay%s"
   coal:
     tier: 2
+    delay: 7
     price: 500
     material: COAL_BLOCK
     display:
      name: "&8Coal Generator"
      lore:
-       - "&7Coal Generator"
+       - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+       -
        - "&7Tier 2 generator."
+       - "&7Price: &a$&f%price%"
        - ""
-       - "&eClick to buy!"
+       - "&7Delay: &f%delay%s"
   iron:
     tier: 3
+    delay: 6
     price: 1000
     material: IRON_BLOCK
     display:
       name: "&7Iron Generator"
       lore:
-        - "&7Iron Generator"
-        - "&7Tier 3 generator."
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
-        - "&eClick to buy!"
+        - "&7Tier 3 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
   gold:
     tier: 4
+    delay: 5
     price: 2000
     material: GOLD_BLOCK
     display:
       name: "&2Gold Generator"
       lore:
-        - "&7Gold Generator"
-        - "&7Tier 4 generator."
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
-        - "&eClick to buy!"
+        - "&7Tier 4 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
   diamond:
     tier: 5
+    delay: 5
     price: 4000
     material: DIAMOND_BlOCK
     display:
       name: "&bDiamond Generator"
       lore:
-        - "&bDiamond Generator"
-        - "&bTier 5 generator."
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
-        - "&eClick to buy!"
+        - "&bTier 5 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
   emerald:
     tier: 6
+    delay: 3
     price: 8000
     material: EMERALD_BLOCK
     display:
       name: "&aEmerald Generator"
       lore:
-        - "&aEmerald Generator"
-        - "&aTier 6 generator."
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
-        - "&eClick to buy!"
+        - "&aTier 6 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
 # Below is a list of all generator drops. Please ensure that the drop matches the correct generator tier!
 Drops:
   wheat:
@@ -88,9 +106,11 @@ Drops:
     display:
       name: "&eWheat"
       lore:
-        - "&eGenerator wheat"
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
         - "&eObtained from Tier 1 Generator"
-        - "Sell via &a/sell&r command!"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
   coal:
     tier: 2
     price: 100
@@ -98,9 +118,11 @@ Drops:
     display:
       name: "&eCoal"
       lore:
-        - "&7Coal"
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
         - "&7Obtained from Tier 2 Generator"
-        - "Sell via &a/sell&r command!"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
   iron:
     tier: 3
     price: 200
@@ -108,9 +130,11 @@ Drops:
     display:
       name: "&eIron"
       lore:
-        - "&7Iron Ingot"
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
         - "&7Obtained from Tier 3 Generator"
-        - "Sell via &a/sell&r command!"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
   gold:
     tier: 4
     price: 300
@@ -118,9 +142,11 @@ Drops:
     display:
       name: "&eGold"
       lore:
-        - "&7Gold Ingot"
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
         - "&7Obtained from Tier 4 Generator"
-        - "Sell via &a/sell&r command!"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
   diamond:
     tier: 5
     price: 400
@@ -128,9 +154,11 @@ Drops:
     display:
       name: "&bDiamond"
       lore:
-        - "&bDiamond Ore"
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        -
         - "&bObtained from Tier 5 Generator"
-        - "Sell via &a/sell&r command!"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
   emerald:
     tier: 6
     price: 500
@@ -138,6 +166,8 @@ Drops:
     display:
       name: "&aEmerald"
       lore:
-        - "&aEmerald Ore"
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
         - "&aObtained from Tier 6 Generator"
-        - "Sell via &a/sell&r command!"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"

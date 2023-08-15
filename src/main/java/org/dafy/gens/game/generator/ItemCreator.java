@@ -1,5 +1,6 @@
 package org.dafy.gens.game.generator;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +43,8 @@ public class ItemCreator {
              GenDrop genDrop = new DropBuilder(dropSection.getConfigurationSection(key)).build();
              ItemStack genItem = genDrop.getDropItem();
              genManager.setDropItem(genDrop.getTier(),genItem);
-             shopManager.addSellableItem(genDrop.getDropItem(), genDrop.getPrice());
+            genDrop.getDropItem().getItemMeta().getLore().add(ChatColor.YELLOW + "Click to buy!");
+            shopManager.addSellableItem(genDrop.getDropItem(), genDrop.getPrice());
         });
     }
 }

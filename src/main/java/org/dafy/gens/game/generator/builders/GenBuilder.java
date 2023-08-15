@@ -15,16 +15,16 @@ public class GenBuilder implements ItemBuilder {
     private final Material genMaterial;
     private String genName;
     private List<String> genLore;
-    private int price;
+    private double price;
     private int genDelay;
     private int tier;
 
     public GenBuilder(ConfigurationSection section) {
         this.genMaterial = getMaterial(section.getString("material", "stone"));
         setName(section.getString("display.name"));
-        setLore(section.getStringList("display.lore"));
         setPrice(section.getInt("price"));
         setDelay(section.getInt("delay"));
+        setLore(section.getStringList("display.lore"));
         setTier(section.getInt("tier"));
     }
 
@@ -52,7 +52,7 @@ public class GenBuilder implements ItemBuilder {
         this.tier = tier;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -81,7 +81,9 @@ public class GenBuilder implements ItemBuilder {
         if (lore != null) {
             ListIterator<String> iterator = lore.listIterator();
             while (iterator.hasNext()) {
-                iterator.set(ChatColor.translateAlternateColorCodes('&', iterator.next()));
+                iterator.set(ChatColor.translateAlternateColorCodes('&', iterator.next()
+                                .replace("%price%", String.valueOf(price))
+                                .replace("%delay%",String.valueOf(genDelay))));
             }
             this.genLore = lore;
         }

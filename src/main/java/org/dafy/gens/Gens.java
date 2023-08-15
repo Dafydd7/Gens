@@ -12,14 +12,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.dafy.gens.bskyblock.IslandDelete;
 import org.dafy.gens.commands.*;
 import org.dafy.gens.game.block.*;
-import org.dafy.gens.game.ConnectionListener;
+import org.dafy.gens.game.spawner.SpawnerManager;
+import org.dafy.gens.placeholder.GenPlaceholders;
+import org.dafy.gens.user.UserConnection;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.ItemCreator;
-import org.dafy.gens.game.sellwand.Sellwand;
+import org.dafy.gens.game.sellwand.SellwandListener;
 import org.dafy.gens.game.upgrader.CloseUpgrader;
 import org.dafy.gens.game.upgrader.GenUpgrader;
 import org.dafy.gens.game.upgrader.UpgradeManager;
-import org.dafy.gens.game.ItemSpawner;
+import org.dafy.gens.game.spawner.ItemSpawner;
 import org.dafy.gens.config.ConfigManager;
 import org.dafy.gens.game.economy.GenEconomy;
 import org.dafy.gens.game.events.GensEvent;
@@ -27,6 +29,8 @@ import org.dafy.gens.game.shop.ShopManager;
 import org.dafy.gens.game.shop.GenShop;
 import org.dafy.gens.user.UserData;
 import org.dafy.gens.user.UserManager;
+import world.bentobox.bentobox.hooks.placeholders.PlaceholderAPIHook;
+import world.bentobox.bentobox.hooks.placeholders.PlaceholderHook;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,22 +51,27 @@ public final class Gens extends JavaPlugin {
     private GenManager genManager;
     private UpgradeManager upgradeManager;
     private ShopManager shopManager;
+    private SpawnerManager spawnerManager;
     private int taskId;
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        // Initialize and inject dependencies
         genEconomy = new GenEconomy(this);
         genEconomy.initEconomy();
+
+        spawnerManager = new SpawnerManager(this);
+
+        genManager = new GenManager(this);
 
         gensEvent = new GensEvent(this);
         gensEvent.init();
 
-        itemSpawner = new ItemSpawner();
+        itemSpawner = new ItemSpawner(this);
         taskId = itemSpawner.runTaskTimer(this, 0, 100).getTaskId();
 
-        genManager = new GenManager(this);
         shopManager = new ShopManager(this);
+
+        blockManager = new BlockManager();
 
         itemCreator = new ItemCreator(this);
         itemCreator.initBuilders();
@@ -72,13 +81,15 @@ public final class Gens extends JavaPlugin {
 
         configManager = new ConfigManager(this);
 
-        blockManager = new BlockManager();
 
         upgradeManager = new UpgradeManager();
+        IslandDelete islandDelete = new IslandDelete(this);
 
         // Register listeners and commands
         registerListeners();
         registerCommands();
+        //Register placeholders
+        registerPlaceholders();
     }
 
     @Override
@@ -93,7 +104,7 @@ public final class Gens extends JavaPlugin {
                 new BlockPlace(this),
                 new BlockInteraction(this),
                 new BlockPiston(this),
-                new ConnectionListener(this),
+                new UserConnection(this),
                 new UpgradeManager(),
                 new GenShop(this),
                 new GenUpgrader(this),
@@ -102,7 +113,7 @@ public final class Gens extends JavaPlugin {
                 new CloseUpgrader(this),
                 new BlockBurn(this),
                 new IslandDelete(this),
-                new Sellwand(this)
+                new SellwandListener(this)
         );
         listeners.forEach(listener -> pm.registerEvents(listener, this));
     }
@@ -113,6 +124,16 @@ public final class Gens extends JavaPlugin {
         manager.registerCommand(new Reload());
         manager.registerCommand(new Shop());
         manager.registerCommand(new Stats());
+        manager.registerCommand(new Admin());
+    }
+    public void registerPlaceholders(){
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new GenPlaceholders(this).register();
+            getLogger().info("MyPlaceholderHook has been registered!");
+        } else {
+            getLogger().severe("PlaceholderAPI not found! This plugin requires PlaceholderAPI.");
+            getServer().getPluginManager().disablePlugin(this);
+        }
     }
 }
 

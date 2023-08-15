@@ -25,24 +25,26 @@ public class BlockPlace implements Listener {
         this.blockManager = plugin.getBlockManager();
 
         BentoBox bentoBox = JavaPlugin.getPlugin(BentoBox.class);
-
         islandsManager = bentoBox.getIslandsManager();
     }
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
-
         Player player = e.getPlayer();
+
+        // Prevents the user from going any further, as block place has been cancelled.
+        if(e.isCancelled()) {
+            e.setCancelled(true);
+            player.sendMessage("Cannot place here");
+            return;
+        }
+        //Get the itemInMainHand.
         ItemStack generatorItem = player.getInventory().getItemInMainHand();
 
-        // Check if the item in hand is a block
-        if (!generatorItem.getType().isBlock()) return;
-
-        // Check to see whether the itemStack is a generatorItem
+        // Check to see whether the itemStack is a generatorItem.
         if (!blockManager.hasItemPersistentData(generatorItem, "GeneratorItem")) return;
 
-        // Create the user object from cache, and check the players' limit
+        // Create the user object from cache, and check the players' limit.
         User user = plugin.getUserManager().getUser(player.getUniqueId());
-
         if (user.getGenLimit() <= 0) {
             e.getPlayer().sendMessage("You have reached your gen limit.");
             e.setCancelled(true);
@@ -72,7 +74,7 @@ public class BlockPlace implements Listener {
         //Add the generator object to the users list.
         user.addGenerator(generator);
         //Finally, add the generator to the spawnerList, to enable itemSpawning.
-        plugin.getItemSpawner().addActiveGenerator(generator);
+        plugin.getSpawnerManager().addActiveGenerator(generator);
     }
 
 }

@@ -10,7 +10,6 @@ import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.user.User;
 import org.dafy.gens.user.UserManager;
-import world.bentobox.bentobox.api.events.island.IslandResetEvent;
 import world.bentobox.bentobox.api.events.island.IslandResettedEvent;
 import world.bentobox.bentobox.api.events.team.TeamKickEvent;
 import world.bentobox.bentobox.api.events.team.TeamLeaveEvent;
@@ -18,15 +17,16 @@ import world.bentobox.bentobox.database.objects.Island;
 
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class IslandDelete implements Listener {
 
     private final GenManager genManager;
     private final UserManager userManager;
     private final ConfigManager configManager;
+    private final Gens plugin;
 
     public IslandDelete(Gens plugin) {
+        this.plugin = plugin;
         userManager = plugin.getUserManager();
         genManager = plugin.getGenManager();
         configManager = plugin.getConfigManager();
@@ -34,7 +34,6 @@ public class IslandDelete implements Listener {
 
     @EventHandler
     private void onIslandReset(IslandResettedEvent event) {
-        Bukkit.broadcastMessage(event.getOldIsland().toString());
         String islandID = event.getOldIsland().getUniqueId();
         deleteIslandGenerators(islandID,event.getIsland().getMemberSet());
     }
@@ -46,7 +45,6 @@ public class IslandDelete implements Listener {
         //Return early if null; this event is triggered by island reset.
         if(owner == null) return;
         UUID kickedPlayer = event.getPlayerUUID();
-        System.out.println(event.getIsland().getOwner() + " team kick");
         deletePlayerGenerators(island.getUniqueId(), kickedPlayer);
     }
 
@@ -57,34 +55,28 @@ public class IslandDelete implements Listener {
         //Return early if null; this event is triggered by island reset.
         if(owner == null) return;
         UUID leftPlayer = event.getPlayerUUID();
-        System.out.println(event.getIsland().getOwner() + " team leave");
         deletePlayerGenerators(island.getUniqueId(), leftPlayer);
     }
 
     private void deleteIslandGenerators(String islandID, Set<UUID>members) {
-        System.out.println(members.size()+  " + asd");
-            if(members.isEmpty()) return;
+        if(members.isEmpty()) return;
         for (UUID member:members) {
             deletePlayerGenerators(islandID,member);
         }
     }
 
-    //TODO fix me
     private void deletePlayerGenerators(String islandUUID, UUID player) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         //If online, remove all generators on that island from cache.
         if (offlinePlayer.isOnline()) {
             User cachedUser = userManager.getUser(player);
             for (Generator generator : cachedUser.getGenerators()) {
-                System.out.println("Generator list size: " + cachedUser.getGenerators().size());
-                System.out.println("Generator island owner: " + generator.getIslandUUID());
-                System.out.println("Expected owner: " + islandUUID);
                 if (!generator.getIslandUUID().equals(islandUUID)) continue;
-                System.out.println("Found gen");
-                genManager.deleteIslandGenerator(generator, cachedUser.getUuid());
+                Bukkit.getScheduler().runTask(plugin, () -> genManager.deleteIslandGenerator(generator, cachedUser.getUuid()));
             }
             return;
         }
+        //TODO fix this, so that offline players can be supported.
         if (!offlinePlayer.hasPlayedBefore()) return;
         //Otherwise, remove from offlinePlayer.
         configManager.loadOfflinePlayer(player, user -> {

@@ -1,11 +1,11 @@
 package org.dafy.gens.game.generator;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.dafy.gens.game.ItemSpawner;
+import org.dafy.gens.game.spawner.ItemSpawner;
 import org.dafy.gens.Gens;
+import org.dafy.gens.game.spawner.SpawnerManager;
 import org.dafy.gens.user.User;
 
 import java.util.Collection;
@@ -15,10 +15,10 @@ import java.util.UUID;
 
 public class GenManager {
     private final Gens plugin;
-    private final ItemSpawner itemSpawner;
+    private final SpawnerManager spawnerManager;
 
     public GenManager(Gens plugin) {
-        this.itemSpawner = plugin.getItemSpawner();
+        this.spawnerManager = plugin.getSpawnerManager();
         this.plugin = plugin;
     }
     private final Map<Integer, Generator> tierToGeneratorMap = new HashMap<>();
@@ -76,7 +76,7 @@ public class GenManager {
         int newTier = generator.getTier() + 1;
         Generator newGenerator = createGenerator(location,newTier);
         location.getBlock().setType(newGenerator.getGenItem().getType());
-        itemSpawner.addAndRemoveGen(generator, newGenerator);
+        spawnerManager.addAndRemoveGen(generator, newGenerator);
         user.addAndRemove(generator, newGenerator);
     }
 
@@ -85,7 +85,7 @@ public class GenManager {
         User user = plugin.getUserManager().getUser(uuid);
         if (user == null) return;
 
-        itemSpawner.removeActiveGenerator(generator);
+        spawnerManager.removeActiveGenerator(generator);
         user.removeGenerator(generator);
         user.removePlaced();
         plugin.getBlockManager().removeBlockPersistentData(generator.getGenLocation().getBlock(),"Generator");
@@ -98,11 +98,24 @@ public class GenManager {
         User user = plugin.getUserManager().getUser(uuid);
         if (user == null) return;
 
-        itemSpawner.removeActiveGenerator(generator);
+        spawnerManager.removeActiveGenerator(generator);
         location.getBlock().setType(Material.AIR);
         location.getWorld().dropItemNaturally(location, plugin.getBlockManager().addItemPersistentData(generator.getGenItem(),"GeneratorItem",generator.getTier()));
         user.removeGenerator(generator);
         user.removePlaced();
         plugin.getBlockManager().removeBlockPersistentData(generator.getGenLocation().getBlock(),"Generator");
+    }
+    public void dropItemNaturally(Generator generator,int amount){
+        Location location = generator.getGenLocation();
+        ItemStack itemStack = generator.getDropItem();
+        if(itemStack == null || location == null) return;
+        itemStack.setAmount(amount);
+        location.getWorld().dropItemNaturally(location,itemStack);
+    }
+    public void dropUpgradedNaturally(Generator generator){
+        Location location = generator.getGenLocation();
+        if(generator.getDropItem() == null || location == null) return;
+        int newTier = Math.min(genCount(), generator.getTier()+1); //Compares the total tier count with the new tier, gets the lowest if newTier > count.
+        location.getWorld().dropItemNaturally(location,tierToGeneratorMap.get(newTier).getDropItem());
     }
 }

@@ -8,13 +8,14 @@ import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.entity.Player;
 import org.dafy.gens.Gens;
 
-@CommandAlias("Gen|Gens|Generator")
+@CommandAlias("Gens")
 public class Reload extends BaseCommand{
     @Dependency
     private Gens plugin;
-    @Subcommand("Reload") @CommandPermission("gens.commands.admin.reload")
+    @Subcommand("Reload") @CommandPermission("gens.admin.commands.reload")
     public void onReload(Player player){
         plugin.reloadConfig();
+        plugin.getItemCreator().initBuilders();
         player.sendMessage("Gens: Config reloaded.");
     }
 }

@@ -1,28 +1,21 @@
-package org.dafy.gens.game;
+package org.dafy.gens.game.spawner;
 
-import org.bukkit.scheduler.BukkitRunnable;
+import org.dafy.gens.Gens;
 import org.dafy.gens.game.generator.Generator;
 
+import javax.swing.plaf.SpinnerUI;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
-public class ItemSpawner extends BukkitRunnable {
-
+public class SpawnerManager {
     private List<Generator> activeGenerators = new CopyOnWriteArrayList<>();
-    public ItemSpawner() {
+
+    public SpawnerManager(Gens plugin){
 
     }
-    @Override
-    public void run() {
-        for (Generator generator : activeGenerators) {
-            //Double check that the generator still exists.
-            if(!generator.getGenLocation().getBlock().getType().isBlock()){
-                removeActiveGenerator(generator);
-                continue;
-            }
-            generator.dropItemNaturally();
-        }
+
+    public List<Generator> getActiveGenerators(){
+        return activeGenerators;
     }
 
     public synchronized void addActiveGenerator(Generator generator) {
@@ -35,4 +28,5 @@ public class ItemSpawner extends BukkitRunnable {
         activeGenerators.remove(oldGenerator);
         activeGenerators.add(newGenerator);
     }
+
 }

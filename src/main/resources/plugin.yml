@@ -6,3 +6,5 @@ author: Dafydd
 depend:
   - Vault
   - NBTAPI
+softdepend:
+  - PlaceholderAPI

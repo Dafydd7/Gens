@@ -1,12 +1,15 @@
 package org.dafy.gens.config;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.Gens;
+import org.dafy.gens.game.spawner.ItemSpawner;
+import org.dafy.gens.game.spawner.SpawnerManager;
 import org.dafy.gens.user.User;
 import org.dafy.gens.user.UserManager;
 
@@ -22,11 +25,13 @@ public class ConfigManager {
     private final Gens plugin;
     private final UserManager userManager;
     private final GenManager genManager;
+    private final SpawnerManager spawnerManager;
 
     public ConfigManager(Gens plugin) {
         this.plugin = plugin;
         userManager = plugin.getUserManager();
         genManager = plugin.getGenManager();
+        spawnerManager = plugin.getSpawnerManager();
     }
 
     public void saveUserConfig(File file, UUID uuid) {
@@ -47,7 +52,7 @@ public class ConfigManager {
                 section.set(generatorPath + ".Location", generator.getGenLocation());
                 section.set(generatorPath + ".Tier", generator.getTier());
                 section.set(generatorPath + ".Island-UUID", generator.getIslandUUID());
-                plugin.getItemSpawner().removeActiveGenerator(generator);
+                spawnerManager.removeActiveGenerator(generator);
                 i++;
             }
         }
@@ -80,11 +85,12 @@ public class ConfigManager {
                     ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
                     if (genSubSection == null) continue;
                     Location location = (Location) genSubSection.get("Location");
+                    if(location == null || location.getBlock().getType().equals(Material.AIR)) continue; // Skip over generator, if location is somehow null, or the block has been removed.
                     int tier = genSubSection.getInt("Tier");
                     Generator generator = genManager.createGenerator(location, tier);
                     user.getGenerators().add(generator);
                     generator.setIslandUUID(genSubSection.getString("Island-UUID"));
-                    plugin.getItemSpawner().addActiveGenerator(generator);
+                    spawnerManager.addActiveGenerator(generator);
                 }
             }
             if (cache) userManager.cacheUser(user);
@@ -114,7 +120,7 @@ public class ConfigManager {
                     Generator generator = genManager.createGenerator(location, tier);
                     user.getGenerators().add(generator);
                     generator.setIslandUUID(genSubSection.getString("Island-UUID"));
-                    plugin.getItemSpawner().addActiveGenerator(generator);
+                    spawnerManager.addActiveGenerator(generator);
                 }
             }
             if (cache) userManager.cacheUser(user);

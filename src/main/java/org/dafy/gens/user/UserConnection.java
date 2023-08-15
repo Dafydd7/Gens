@@ -1,4 +1,4 @@
-package org.dafy.gens.game;
+package org.dafy.gens.user;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,10 +9,10 @@ import org.dafy.gens.user.UserData;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ConnectionListener implements Listener {
+public class UserConnection implements Listener {
 
     private final UserData userData;
-    public ConnectionListener(Gens plugin){
+    public UserConnection(Gens plugin){
         this.userData = plugin.getUserData();
     }
     @EventHandler

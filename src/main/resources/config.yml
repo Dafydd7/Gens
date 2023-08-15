@@ -1,3 +1,17 @@
+#Placeholder messages:
+# %gens_limit% - The players current gen limit
+# %gens_placed% - The players amount of gens placed
+# %gens_event% - The current event
+# ~Placeholders
+#Event messages: (supports chat colors)
+Upgrade-Event-Message: "&7[&aGens&7] &aNew event: Upgrade event."
+Double-Event-Message: "&7[&aGens&7] &aNew event: Double drop event."
+Sell-Event-Message: "&7[&aGens&7] &aNew event: Sell event."
+Inactive-Event-Message: "&7[&aGens&7] &cEvent: Inactive."
+#Mode-Selection-Interval :: The time in minutes, where the event will be inactive.
+Mode-Selection-Interval: 1
+#Event-Interval :: The time in minutes, for the event to be active.
+Event-Interval: 1
 Generators:
   wheat:
     tier: 1

@@ -43,14 +43,18 @@ public class ShopManager {
         sellableItems.clear();
     }
 
-    public Inventory openShopGUI(Player player){
-        Inventory inventory = Bukkit.createInventory(player,Math.max(9,genManager.genCount()),"Generator Shop");
-        if(!genManager.isEmpty()) {
-            for (Generator generator : genManager.getGenerators()) {
-                inventory.addItem(generator.getGenItem());
-            }
+    public void openShopGUI(Player player){
+        int genCount = genManager.genCount();
+        int inventorySize = (genCount / 9 + 1) * 9; // Round up to the nearest multiple of 9
+        Inventory inventory = Bukkit.createInventory(player, inventorySize, "Generator Shop");
+        if(genManager.isEmpty()) {
+            player.sendMessage(ChatColor.RED + "Error: No gens have been created.\nPlease contact an admin.");
+            return;
         }
-        return inventory;
+        for (Generator generator : genManager.getGenerators()) {
+            inventory.addItem(generator.getGenItem( ));
+        }
+        player.openInventory(inventory);
     }
     public void sellAllItems(Player player,Inventory inventory){
         ItemStack[] items = inventory.getContents();

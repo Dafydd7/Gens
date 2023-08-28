@@ -1,10 +1,9 @@
 package org.dafy.gens.user;
 
+import org.bukkit.entity.Player;
 import org.dafy.gens.Gens;
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class UserData {
     private final Gens plugin;
@@ -15,8 +14,8 @@ public class UserData {
         this.plugin = plugin;
     }
 
-    public void loadOrCreateUser(UUID uuid) {
-        plugin.getConfigManager().loadUserConfig(uuid,  true);
+    public void loadOrCreateUser(Player player) {
+        plugin.getConfigManager().loadUserConfig(player, true);
     }
 
     public void saveUser(UUID uuid) {

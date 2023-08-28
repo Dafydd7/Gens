@@ -17,13 +17,12 @@ public class BlockPiston implements Listener {
     public void onPistonPush(BlockPistonExtendEvent e) {
         if (e.isCancelled()) return;
         // Check if the pushed block is not a generator
-        if (!blockManager.hasBlockPersistentData(e.getBlock(), "Generator")) return;
+        if (!blockManager.hasBlockPersistentData(e.getBlock().getRelative(e.getDirection()), "Generator")) return;
         e.setCancelled(true);
     }
     @EventHandler
     public void onPistonRetract(BlockPistonRetractEvent e) {
         if (e.isCancelled()) return;
-        System.out.println("Entity Event");
         boolean foundMatchingBlock = e.getBlocks()
                 .stream()
                 .anyMatch(block -> blockManager.hasBlockPersistentData(block, "Generator"));

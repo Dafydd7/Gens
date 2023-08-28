@@ -13,7 +13,7 @@ public class Admin extends BaseCommand {
     @Dependency
     private Gens plugin;
     @CommandPermission("gens.commands.admin.give")
-    @Subcommand("give limit") @Syntax("<Player> <Amount>")
+    @Subcommand("givelimit") @Syntax("<Player> <Amount>")
     public void onTierGive(Player sender, OnlinePlayer player, int amount){
         if(amount <= 0 ){
             sender.sendMessage(ChatColor.RED + "ERROR: Number must be greater than 0.");
@@ -27,7 +27,7 @@ public class Admin extends BaseCommand {
         "\nTheir new limit is now: " + userLimit + ".");
     }
     @CommandPermission("gens.commands.admin.take")
-    @Subcommand("take limit") @Syntax("<Player> <Amount>")
+    @Subcommand("takelimit") @Syntax("<Player> <Amount>")
     public void onTierRemove(Player sender, OnlinePlayer player, int amount){
         User user = plugin.getUserManager().getUser(player.getPlayer().getUniqueId());
         int userLimit = user.getGenLimit();

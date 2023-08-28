@@ -2,7 +2,6 @@ package org.dafy.gens.game.block;
 
 import de.tr7zw.nbtapi.NBTBlock;
 import de.tr7zw.nbtapi.NBTItem;
-import de.tr7zw.nbtapi.plugin.NBTAPI;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,6 +19,7 @@ public class BlockManager{
     }
     public boolean hasItemPersistentData(ItemStack itemStack, String key) {
         NBTItem nbtItem = new NBTItem(itemStack);
+        if(nbtItem.getItem() == null) return false;
         return nbtItem.hasTag(key);
     }
     public void addBlockPersistentData(Block block, String key, Integer tier) {
@@ -29,7 +29,7 @@ public class BlockManager{
 
     public void removeBlockPersistentData(Block block, String key) {
         NBTBlock nbtBlock = new NBTBlock(block);
-        if(!nbtBlock.getData().hasTag(key)) return;
+        if(nbtBlock.getData() == null || !nbtBlock.getData().hasTag(key)) return;
         nbtBlock.getData().clearNBT();
     }
     public boolean hasBlockPersistentData(Block block, String key) {

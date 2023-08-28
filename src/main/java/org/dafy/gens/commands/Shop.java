@@ -13,6 +13,6 @@ public class Shop  extends BaseCommand {
     private Gens plugin;
     @Subcommand("Shop")
     public void openShop(Player player){
-        player.openInventory(plugin.getShopManager().openShopGUI(player));
+        plugin.getShopManager().openShopGUI(player);
     }
 }

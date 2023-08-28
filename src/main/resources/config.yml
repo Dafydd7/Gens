@@ -16,84 +16,182 @@ Generators:
   wheat:
     tier: 1
     delay: 7
-    price: 100
+    price: 1000
     material: HAY_BLOCK
     display:
-     name: "&eWheat Generator"
-     lore:
-      - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
-      - ""
-      - "&7Tier 1 generator."
-      - "&7Price: &a$&f%price%"
-      - ""
-      - "&7Delay: &f%delay%s"
-  coal:
-    tier: 2
-    delay: 7
-    price: 500
-    material: COAL_BLOCK
-    display:
-     name: "&8Coal Generator"
-     lore:
-       - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
-       -
-       - "&7Tier 2 generator."
-       - "&7Price: &a$&f%price%"
-       - ""
-       - "&7Delay: &f%delay%s"
-  iron:
-    tier: 3
-    delay: 6
-    price: 1000
-    material: IRON_BLOCK
-    display:
-      name: "&7Iron Generator"
+      name: "&e&lWheat Generator (Tier 1)"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
+        - "&7Tier 1 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  melon:
+    tier: 2
+    delay: 7
+    price: 2500
+    material: MELON
+    display:
+      name: "&e&lMelon Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&7Tier 2 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  coalore:
+    tier: 3
+    delay: 7
+    price: 3500
+    material: COAL_ORE
+    display:
+      name: "&8&lCoal Ore Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        -
         - "&7Tier 3 generator."
         - "&7Price: &a$&f%price%"
         - ""
         - "&7Delay: &f%delay%s"
-  gold:
+  coalblock:
     tier: 4
-    delay: 5
-    price: 2000
-    material: GOLD_BLOCK
+    delay: 7
+    price: 5000
+    material: COAL_BLOCK
     display:
-      name: "&2Gold Generator"
+      name: "&8&lCoal Block Generator"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
-        - ""
+        -
         - "&7Tier 4 generator."
         - "&7Price: &a$&f%price%"
         - ""
         - "&7Delay: &f%delay%s"
-  diamond:
+  ironore:
     tier: 5
-    delay: 5
-    price: 4000
-    material: DIAMOND_BlOCK
+    delay: 6
+    price: 7500
+    material: IRON_ORE
     display:
-      name: "&bDiamond Generator"
+      name: "&7&lIron Ore Generator"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
-        - "&bTier 5 generator."
+        - "&7Tier 5 generator."
         - "&7Price: &a$&f%price%"
         - ""
         - "&7Delay: &f%delay%s"
-  emerald:
+  ironblock:
     tier: 6
-    delay: 3
-    price: 8000
-    material: EMERALD_BLOCK
+    delay: 6
+    price: 10000
+    material: IRON_BLOCK
     display:
-      name: "&aEmerald Generator"
+      name: "&7&lIron Block Generator"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
         - ""
-        - "&aTier 6 generator."
+        - "&7Tier 6 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  goldore:
+    tier: 7
+    delay: 5
+    price: 15000
+    material: GOLD_ORE
+    display:
+      name: "&2&lGold Ore Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&7Tier 7 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  goldblock:
+    tier: 8
+    delay: 5
+    price: 20000
+    material: GOLD_BLOCK
+    display:
+      name: "&2&lGold Block Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&7Tier 8 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  diamondore:
+    tier: 9
+    delay: 5
+    price: 30000
+    material: DIAMOND_ORE
+    display:
+      name: "&b&lDiamond Ore Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&bTier 9 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  diamondblock:
+    tier: 10
+    delay: 5
+    price: 40000
+    material: DIAMOND_BlOCK
+    display:
+      name: "&b&lDiamond Block Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&bTier 10 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  emeraldore:
+    tier: 11
+    delay: 3
+    price: 60000
+    material: EMERALD_ORE
+    display:
+      name: "&a&lEmerald Ore Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&aTier 11 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  emeraldblock:
+    tier: 12
+    delay: 3
+    price: 80000
+    material: EMERALD_BLOCK
+    display:
+      name: "&a&lEmerald Block Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&aTier 12 generator."
+        - "&7Price: &a$&f%price%"
+        - ""
+        - "&7Delay: &f%delay%s"
+  netherrack:
+    tier: 13
+    delay: 3
+    price: 100000
+    material: NETHERRACK
+    display:
+      name: "&c&lNetherrack Generator"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ"
+        - ""
+        - "&aTier 13 generator."
         - "&7Price: &a$&f%price%"
         - ""
         - "&7Delay: &f%delay%s"
@@ -101,7 +199,7 @@ Generators:
 Drops:
   wheat:
     tier: 1
-    price: 50
+    price: 1
     material: WHEAT
     display:
       name: "&eWheat"
@@ -111,63 +209,147 @@ Drops:
         - "&eObtained from Tier 1 Generator"
         - "&7Sell via &a/sell&r command!"
         - "&7Value: &a$%price%"
-  coal:
+  melon:
     tier: 2
-    price: 100
+    price: 2
+    material: MELON_SLICE
+    display:
+      name: "&e&lMelon"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&eObtained from Tier 2 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  coalore:
+    tier: 3
+    price: 5
     material: COAL
     display:
       name: "&eCoal"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
         - ""
-        - "&7Obtained from Tier 2 Generator"
-        - "&7Sell via &a/sell&r command!"
-        - "&7Value: &a$%price%"
-  iron:
-    tier: 3
-    price: 200
-    material: IRON_INGOT
-    display:
-      name: "&eIron"
-      lore:
-        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
-        - ""
         - "&7Obtained from Tier 3 Generator"
         - "&7Sell via &a/sell&r command!"
         - "&7Value: &a$%price%"
-  gold:
+  coalblock:
     tier: 4
-    price: 300
-    material: GOLD_INGOT
+    price: 7.5
+    material: COAL_BLOCK
     display:
-      name: "&eGold"
+      name: "&e&lCoal Block"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
         - ""
         - "&7Obtained from Tier 4 Generator"
         - "&7Sell via &a/sell&r command!"
         - "&7Value: &a$%price%"
-  diamond:
+  ironore:
     tier: 5
-    price: 400
-    material: DIAMOND
+    price: 10
+    material: IRON_INGOT
     display:
-      name: "&bDiamond"
-      lore:
-        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
-        -
-        - "&bObtained from Tier 5 Generator"
-        - "&7Sell via &a/sell&r command!"
-        - "&7Value: &a$%price%"
-  emerald:
-    tier: 6
-    price: 500
-    material: EMERALD
-    display:
-      name: "&aEmerald"
+      name: "&e&lIron"
       lore:
         - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
         - ""
-        - "&aObtained from Tier 6 Generator"
+        - "&7Obtained from Tier 3 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  ironblock:
+    tier: 6
+    price: 12.5
+    material: IRON_BLOCK
+    display:
+      name: "&e&lIron"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&7Obtained from Tier 6 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  goldore:
+    tier: 7
+    price: 17.5
+    material: GOLD_INGOT
+    display:
+      name: "&e&lGold ingot"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&7Obtained from Tier 7 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  goldblock:
+    tier: 8
+    price: 20
+    material: GOLD_BLOCK
+    display:
+      name: "&e&lGold Block"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&7Obtained from Tier 8 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  diamondore:
+    tier: 9
+    price: 22.5
+    material: DIAMOND
+    display:
+      name: "&b&lDiamond"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        -
+        - "&bObtained from Tier 9 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  diamondblock:
+    tier: 10
+    price: 25
+    material: DIAMOND_BLOCK
+    display:
+      name: "&b&lDiamond Block"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        -
+        - "&bObtained from Tier 10 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  emerald:
+    tier: 11
+    price: 27.5
+    material: EMERALD
+    display:
+      name: "&a&lEmerald"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&aObtained from Tier 11 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  emeraldblock:
+    tier: 12
+    price: 30
+    material: EMERALD_BLOCK
+    display:
+      name: "&a&lEmerald Block"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&aObtained from Tier 12 Generator"
+        - "&7Sell via &a/sell&r command!"
+        - "&7Value: &a$%price%"
+  netherrack:
+    tier: 13
+    price: 35
+    material: NETHERRACK
+    display:
+      name: "&c&lNetherrack"
+      lore:
+        - "&8ɢᴇɴᴇʀᴀᴛᴏʀ ᴅʀᴏᴘ"
+        - ""
+        - "&aObtained from Tier 13 Generator"
         - "&7Sell via &a/sell&r command!"
         - "&7Value: &a$%price%"

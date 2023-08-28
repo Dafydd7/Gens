@@ -1,6 +1,8 @@
 package org.dafy.gens.user;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
 
 public class UserManager {
 
@@ -13,11 +15,9 @@ public class UserManager {
     public void removeUser(UUID uuid){
         userHashMap.remove(uuid);
     }
-
     public User getUser(UUID uuid){
         return userHashMap.get(uuid);
     }
-
     public Set<UUID> getUserKeys(){
         return userHashMap.keySet();
     }

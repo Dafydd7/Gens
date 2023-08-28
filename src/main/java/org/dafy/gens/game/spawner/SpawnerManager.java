@@ -1,21 +1,15 @@
 package org.dafy.gens.game.spawner;
 
-import org.dafy.gens.Gens;
+import lombok.Getter;
 import org.dafy.gens.game.generator.Generator;
 
-import javax.swing.plaf.SpinnerUI;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Getter
 public class SpawnerManager {
     private List<Generator> activeGenerators = new CopyOnWriteArrayList<>();
-
-    public SpawnerManager(Gens plugin){
-
-    }
-
-    public List<Generator> getActiveGenerators(){
-        return activeGenerators;
+    public SpawnerManager(){
     }
 
     public synchronized void addActiveGenerator(Generator generator) {

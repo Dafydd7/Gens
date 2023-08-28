@@ -3,6 +3,7 @@ package org.dafy.gens.user;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.dafy.gens.game.generator.Generator;
 
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ import java.util.UUID;
 @Setter
 public class User {
     private final UUID uuid;
+    private Player player;
     private int gensPlaced = 0;
     private int genLimit = 40;
     private List<Generator> generators = new ArrayList<>();
-
 
    public void addPlaced(){
        genLimit -= 1;

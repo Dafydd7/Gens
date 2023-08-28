@@ -13,13 +13,12 @@ import org.dafy.gens.bskyblock.IslandDelete;
 import org.dafy.gens.commands.*;
 import org.dafy.gens.game.block.*;
 import org.dafy.gens.game.spawner.SpawnerManager;
+import org.dafy.gens.game.upgrader.UpgradeGUI;
 import org.dafy.gens.placeholder.GenPlaceholders;
 import org.dafy.gens.user.UserConnection;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.ItemCreator;
 import org.dafy.gens.game.sellwand.SellwandListener;
-import org.dafy.gens.game.upgrader.CloseUpgrader;
-import org.dafy.gens.game.upgrader.GenUpgrader;
 import org.dafy.gens.game.upgrader.UpgradeManager;
 import org.dafy.gens.game.spawner.ItemSpawner;
 import org.dafy.gens.config.ConfigManager;
@@ -29,8 +28,6 @@ import org.dafy.gens.game.shop.ShopManager;
 import org.dafy.gens.game.shop.GenShop;
 import org.dafy.gens.user.UserData;
 import org.dafy.gens.user.UserManager;
-import world.bentobox.bentobox.hooks.placeholders.PlaceholderAPIHook;
-import world.bentobox.bentobox.hooks.placeholders.PlaceholderHook;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +41,7 @@ public final class Gens extends JavaPlugin {
     private ItemSpawner itemSpawner;
     private UserData userData;
     private ItemCreator itemCreator;
+    private UpgradeGUI upgradeGUI;
 
     private BlockManager blockManager;
     private UserManager userManager;
@@ -59,7 +57,9 @@ public final class Gens extends JavaPlugin {
         genEconomy = new GenEconomy(this);
         genEconomy.initEconomy();
 
-        spawnerManager = new SpawnerManager(this);
+        blockManager = new BlockManager();
+
+        spawnerManager = new SpawnerManager();
 
         genManager = new GenManager(this);
 
@@ -71,8 +71,6 @@ public final class Gens extends JavaPlugin {
 
         shopManager = new ShopManager(this);
 
-        blockManager = new BlockManager();
-
         itemCreator = new ItemCreator(this);
         itemCreator.initBuilders();
 
@@ -80,7 +78,6 @@ public final class Gens extends JavaPlugin {
         userData = new UserData(this);
 
         configManager = new ConfigManager(this);
-
 
         upgradeManager = new UpgradeManager();
         IslandDelete islandDelete = new IslandDelete(this);
@@ -102,15 +99,14 @@ public final class Gens extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         List<Listener> listeners = Arrays.asList(
                 new BlockPlace(this),
+                upgradeGUI = new UpgradeGUI(this),
                 new BlockInteraction(this),
                 new BlockPiston(this),
                 new UserConnection(this),
                 new UpgradeManager(),
                 new GenShop(this),
-                new GenUpgrader(this),
                 new BlockExplode(this),
                 new BlockBreak(this),
-                new CloseUpgrader(this),
                 new BlockBurn(this),
                 new IslandDelete(this),
                 new SellwandListener(this)

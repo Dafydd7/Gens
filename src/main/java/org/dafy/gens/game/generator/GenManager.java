@@ -75,8 +75,8 @@ public class GenManager {
         int newTier = generator.getTier() + 1;
         Generator newGenerator = createGenerator(location,newTier);
         location.getBlock().setType(newGenerator.getGenItem().getType());
-        spawnerManager.addAndRemoveGen(generator, newGenerator);
         user.addAndRemove(generator, newGenerator);
+        spawnerManager.addAndRemoveGen(generator, newGenerator);
     }
 
     //Method called when island is deleted/reset, as all blocks will be deleted anyway.

@@ -2,9 +2,9 @@ package org.dafy.gens.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Syntax;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -14,13 +14,14 @@ import org.dafy.gens.Gens;
 import org.dafy.gens.game.generator.Generator;
 
 
-@CommandAlias("dbg || debug")
+
+@CommandAlias("dbg || debug") @CommandPermission("gens.commands.admin.debug")
 public class DebugCMDS extends BaseCommand {
     @Dependency
     private Gens plugin;
     @Subcommand("state")
     public void checkState(CommandSender sender) {
-        sender.sendMessage("Mode is:" + plugin.getGensEvent().getActiveMode().toString());
+        sender.sendMessage("Current Event: " + plugin.getGensEvent().getActiveMode().toString());
     }
 
     @Subcommand("giveTier")

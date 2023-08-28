@@ -20,7 +20,6 @@ public class GenEconomy {
             plugin.getServer().getPluginManager().disablePlugin(plugin);
         }
 }
-
     private boolean setupEconomy() {
         if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;

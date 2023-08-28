@@ -1,6 +1,5 @@
 package org.dafy.gens.game.block;
 
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +10,6 @@ import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.Gens;
 import org.dafy.gens.user.User;
 import world.bentobox.bentobox.BentoBox;
-import world.bentobox.bentobox.database.objects.Island;
 import world.bentobox.bentobox.managers.IslandsManager;
 
 public class BlockPlace implements Listener {
@@ -34,14 +32,21 @@ public class BlockPlace implements Listener {
         // Prevents the user from going any further, as block place has been cancelled.
         if(e.isCancelled()) {
             e.setCancelled(true);
-            player.sendMessage("Cannot place here");
             return;
         }
+
         //Get the itemInMainHand.
         ItemStack generatorItem = player.getInventory().getItemInMainHand();
 
         // Check to see whether the itemStack is a generatorItem.
         if (!blockManager.hasItemPersistentData(generatorItem, "GeneratorItem")) return;
+
+        //Check to see if the player tried to place the gen on an island.
+        if(islandsManager.getIslandAt(player.getLocation()).isEmpty()){
+            player.sendMessage("You can only place generators on islands.");
+            e.setCancelled(true);
+            return;
+        }
 
         // Create the user object from cache, and check the players' limit.
         User user = plugin.getUserManager().getUser(player.getUniqueId());
@@ -54,19 +59,15 @@ public class BlockPlace implements Listener {
         int tier = blockManager.getItemTier(generatorItem,"GeneratorItem");
         //Create the generator based off the tier.
         Generator generator = plugin.getGenManager().createGenerator(e.getBlock().getLocation(), tier);
-
+        //Return early if gen is null
         if(generator == null) {
             e.getPlayer().sendMessage("[Gens] ERROR: Cannot place null generator!");
             e.setCancelled(true);
             return;
         }
-
-        world.bentobox.bentobox.api.user.User islandUser = world.bentobox.bentobox.api.user.User.getInstance(player);
-
-        World playerWorld = player.getWorld();
-        Island island = islandsManager.getIsland(playerWorld, islandUser);
-
-        generator.setIslandUUID(island.getUniqueId());
+        //Set the island id & owner for the generator.
+        generator.setIslandUUID(islandsManager.getIslandAt(player.getLocation()).get().getUniqueId());
+        generator.setGenOwner(player);
         // Set the persistent data container for this block.
         blockManager.addBlockPersistentData(e.getBlock(), "Generator", tier);
         // Adds +1 to the gensPlaced, and genLimit amount.

@@ -1,16 +1,16 @@
 package org.dafy.gens.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.dafy.gens.game.block.BlockManager;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.spawner.ItemSpawner;
 import org.dafy.gens.game.spawner.SpawnerManager;
 import org.dafy.gens.user.User;
 import org.dafy.gens.user.UserManager;
@@ -18,8 +18,6 @@ import org.dafy.gens.user.UserManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 public class ConfigManager {
@@ -69,42 +67,45 @@ public class ConfigManager {
         }
     }
 
-    public void loadUserConfig(UUID uuid, boolean cache) {
-            User user = new User(uuid);
-            File file = new File(plugin.getDataFolder() + "/users/" + uuid.toString() + ".yml");
-            if (!file.exists()) {
-                createUser(file,user);
-                return;
-            }
-            FileConfiguration userYaml = YamlConfiguration.loadConfiguration(file);
-            ConfigurationSection section = userYaml.getConfigurationSection("User." + uuid);
-            if (section == null) return;
+    public void loadUserConfig(Player onlinePlayer, boolean cache) {
+        final UUID uuid = onlinePlayer.getUniqueId();
+        User user = new User(uuid);
+        File file = new File(plugin.getDataFolder() + "/users/" + uuid + ".yml");
+        if (!file.exists()) {
+            createUser(file,user);
+            return;
+        }
+        FileConfiguration userYaml = YamlConfiguration.loadConfiguration(file);
+        ConfigurationSection section = userYaml.getConfigurationSection("User." + uuid);
+        if (section == null) return;
+        user.setGensPlaced(section.getInt(ConfigKeys.GEN_PLACED));
+        user.setGenLimit(section.getInt(ConfigKeys.GEN_LIMIT));
 
-            user.setGensPlaced(section.getInt(ConfigKeys.GEN_PLACED));
-            user.setGenLimit(section.getInt(ConfigKeys.GEN_LIMIT));
-
-            ConfigurationSection genSection = section.getConfigurationSection("Generators.");
-            if (genSection != null) {
-                for (String key : genSection.getKeys(false)) {
-                    ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
-                    if (genSubSection == null) continue;
-                    Location location = (Location) genSubSection.get("Location");
-                    Block block = location.getBlock();
-                    if(block.getType().equals(Material.AIR) || block.isEmpty()) {
-                        genSection.set(key,null); //Deletes the key, as the generator no longer exists.
-                        user.removePlaced(); //Bring back their stats
-                        if(!blockManager.hasBlockPersistentData(block,"Generator")) continue;
-                        blockManager.removeBlockPersistentData(block,"Generator"); //Remove the NBT, so other blocks can now be placed there again.
-                        continue;
-                    } // Skip over generator, if location is somehow null, or the block has been removed.
-                    int tier = genSubSection.getInt("Tier");
-                    Generator generator = genManager.createGenerator(location, tier);
-                    user.getGenerators().add(generator);
-                    generator.setIslandUUID(genSubSection.getString("Island-UUID"));
-                    spawnerManager.addActiveGenerator(generator);
-                }
+        ConfigurationSection genSection = section.getConfigurationSection("Generators.");
+        if (genSection != null) {
+            for (String key : genSection.getKeys(false)) {
+                ConfigurationSection genSubSection = genSection.getConfigurationSection(key);
+                if (genSubSection == null) continue;
+                Location location = (Location) genSubSection.get("Location");
+                Block block = location.getBlock();
+                if(!blockManager.hasBlockPersistentData(block,"Generator")) {
+                    section.set(key,null); //Deletes the key, as the generator no longer exists.
+                    user.removePlaced(); //Bring back their stats
+                    blockManager.removeBlockPersistentData(block,"Generator"); //Remove the NBT, so other blocks can now be placed there again.
+                    continue;
+                } // Skip over generator, if location is somehow null, or the block has been removed.
+                int tier = genSubSection.getInt("Tier");
+                Generator generator = genManager.createGenerator(location, tier);
+                user.getGenerators().add(generator);
+                generator.setIslandUUID(genSubSection.getString("Island-UUID"));
+                generator.setGenOwner(onlinePlayer);
+                spawnerManager.addActiveGenerator(generator);
             }
-            if (cache) userManager.cacheUser(user);
+        }
+        if (cache) {
+            user.setPlayer(Bukkit.getPlayer(uuid));
+            userManager.cacheUser(user);
+        }
     }
 
     public void createUser(File file, User user) {
@@ -115,6 +116,9 @@ public class ConfigManager {
                 plugin.getLogger().log(Level.WARNING, "Unable to create user file.");
                 return;
             }
+            user.setPlayer(Bukkit.getPlayer(user.getUuid()));
             userManager.cacheUser(user);
         }
+
+
 }

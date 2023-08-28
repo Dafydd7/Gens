@@ -10,10 +10,26 @@ import org.dafy.gens.game.generator.Generator;
 public class GensEvent {
     private final Gens plugin;
     private final GenManager genManager;
+    private final String inactiveEventMessage;
+    private final String upgradeEventMessage;
+    private final String doubleEventMessage;
+    private final String sellEventMessage;
+    private final int modeIntervalInteger;
+    private final int eventInterval;
+
     public GensEvent(Gens plugin){
         this.plugin = plugin;
         genManager = plugin.getGenManager();
+        //init event strings
+        inactiveEventMessage = plugin.getConfig().getString("Inactive-Event-Message", "&aEvent: Now inactive.");
+        upgradeEventMessage = plugin.getConfig().getString("Upgrade-Event-Message", "&aEvent: Upgrade drop");
+        doubleEventMessage = plugin.getConfig().getString("Double-Event-Message", "&aEvent: Double drop.");
+        sellEventMessage = plugin.getConfig().getString("Sell-Event-Message", "&aEvent: Sell Event.");
+        //& init mode intervals.
+        modeIntervalInteger = plugin.getConfig().getInt("Mode-Selection-Interval",1);
+        eventInterval = plugin.getConfig().getInt("Event-Interval",1);
     }
+
     @Getter
     private EventState activeMode = EventState.INACTIVE;
     private int modeTaskId;
@@ -29,9 +45,8 @@ public class GensEvent {
             Bukkit.getScheduler().cancelTask(modeTaskId);
         }
         // Start a new mode selection task (15 minutes interval)
-        int interval = plugin.getConfig().getInt("Mode-Selection-Interval",1);
-        modeTaskId = Bukkit.getScheduler().runTaskLater(plugin, this::changeActiveModeRandomly, 20L * 60 * interval).getTaskId();
-        broadcastMessage(plugin.getConfig().getString("Inactive-Event-Message", "&aEvent: Now inactive."));
+        modeTaskId = Bukkit.getScheduler().runTaskLater(plugin, this::changeActiveModeRandomly, 20L * 60 * modeIntervalInteger).getTaskId();
+        broadcastMessage(inactiveEventMessage);
     }
 
     public void getModeAndDrop(Generator generator){
@@ -57,11 +72,11 @@ public class GensEvent {
 
         switch (activeMode) {
             case UPGRADE_DROP ->
-                    broadcastMessage(plugin.getConfig().getString("Upgrade-Event-Message", "&aEvent: Upgrade drop"));
+                    broadcastMessage(upgradeEventMessage);
             case DOUBLE_DROP ->
-                    broadcastMessage(plugin.getConfig().getString("Double-Event-Message", "&aEvent: Double drop."));
+                    broadcastMessage(doubleEventMessage);
             case SELL_EVENT ->
-                    broadcastMessage(plugin.getConfig().getString("Sell-Event-Message", "&aEvent: Sell Event."));
+                    broadcastMessage(sellEventMessage);
         }
             startGeneratorTask();
     }
@@ -89,7 +104,6 @@ public class GensEvent {
     }
 
     private void startGeneratorTask() {
-        int eventInterval = plugin.getConfig().getInt("Event-Interval",1);
         Bukkit.getScheduler().runTaskLater(plugin, this::stopEvent, 20L * 60 * eventInterval);
     }
 

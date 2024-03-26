@@ -102,10 +102,9 @@ public class ConfigManager {
                 spawnerManager.addActiveGenerator(generator);
             }
         }
-        if (cache) {
-            user.setPlayer(Bukkit.getPlayer(uuid));
-            userManager.cacheUser(user);
-        }
+        if (!cache) return;
+        user.setPlayer(Bukkit.getPlayer(uuid));
+        userManager.cacheUser(user);
     }
 
     public void createUser(File file, User user) {
@@ -119,6 +118,4 @@ public class ConfigManager {
             user.setPlayer(Bukkit.getPlayer(user.getUuid()));
             userManager.cacheUser(user);
         }
-
-
 }

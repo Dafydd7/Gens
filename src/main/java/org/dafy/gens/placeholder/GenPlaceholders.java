@@ -1,11 +1,12 @@
 package org.dafy.gens.placeholder;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.dafy.gens.Gens;
 import org.dafy.gens.game.events.GensEvent;
 import org.dafy.gens.user.User;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class GenPlaceholders extends PlaceholderExpansion {
     private final Gens plugin;
@@ -14,22 +15,31 @@ public class GenPlaceholders extends PlaceholderExpansion {
         this.plugin = plugin;
         this.gensEvent = plugin.getGensEvent();
     }
-    @Override
-    public @NotNull String getIdentifier() {
-        return "gens";
-    }
 
+    @Nonnull
     @Override
-    public @NotNull String getAuthor() {
+    public String getAuthor() {
         return "Dafydd";
     }
 
+    @Nonnull
     @Override
-    public @NotNull String getVersion() {
+    public String getIdentifier() {
+        return "WildKits";
+    }
+
+    @Nonnull
+    @Override
+    public String getVersion() {
         return "1.0.0";
     }
+
     @Override
-    public String onPlaceholderRequest(Player player, String params) {
+    public boolean persist() {
+        return true; // This is required or else PlaceholderAPI will unregister the Expansion on reload
+    }
+
+    public String onRequest(OfflinePlayer player, @Nonnull String params) {
         if(params.equalsIgnoreCase("name")) {
             return player == null ? null : player.getName();
         }

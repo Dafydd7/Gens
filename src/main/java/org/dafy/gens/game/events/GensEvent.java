@@ -28,13 +28,14 @@ public class GensEvent {
         //& init mode intervals.
         modeIntervalInteger = plugin.getConfig().getInt("Mode-Selection-Interval",1);
         eventInterval = plugin.getConfig().getInt("Event-Interval",1);
+        init();
     }
 
     @Getter
     private EventState activeMode = EventState.INACTIVE;
     private int modeTaskId;
 
-    public void init() {
+    private void init() {
         // Start the mode selection timer (15 minutes)
         startModeSelectionTimer();
     }
@@ -86,21 +87,12 @@ public class GensEvent {
     }
 
     public String getEventName() {
-        switch (activeMode) {
-            case UPGRADE_DROP -> {
-                return "Upgrade Drop.";
-            }
-            case DOUBLE_DROP -> {
-                return "Double Drop.";
-            }
-            case SELL_EVENT -> {
-                return "Sell Event.";
-            }
-            case INACTIVE -> {
-                return "Inactive.";
-            }
-        }
-        return null;
+        return switch (activeMode) {
+            case UPGRADE_DROP -> "Upgrade Drop.";
+            case DOUBLE_DROP -> "Double Drop.";
+            case SELL_EVENT -> "Sell Event.";
+            default -> "Inactive.";
+        };
     }
 
     private void startGeneratorTask() {

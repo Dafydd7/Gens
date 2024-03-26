@@ -1,10 +1,12 @@
 package org.dafy.gens;
 
-import co.aikar.commands.BukkitCommandManager;
-
+import co.aikar.commands.BukkitMessageFormatter;
+import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.annotation.Dependency;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,36 +58,22 @@ public final class Gens extends JavaPlugin {
         saveDefaultConfig();
         genEconomy = new GenEconomy(this);
         genEconomy.initEconomy();
-
         blockManager = new BlockManager();
-
         spawnerManager = new SpawnerManager();
-
         genManager = new GenManager(this);
-
         gensEvent = new GensEvent(this);
-        gensEvent.init();
-
         itemSpawner = new ItemSpawner(this);
         taskId = itemSpawner.runTaskTimer(this, 0, 20).getTaskId();
-
         shopManager = new ShopManager(this);
-
         itemCreator = new ItemCreator(this);
         itemCreator.initBuilders();
-
         userManager = new UserManager();
         userData = new UserData(this);
-
         configManager = new ConfigManager(this);
-
         upgradeManager = new UpgradeManager();
-        IslandDelete islandDelete = new IslandDelete(this);
-
-        // Register listeners and commands
+        new IslandDelete(this);
         registerListeners();
         registerCommands();
-        //Register placeholders
         registerPlaceholders();
     }
 
@@ -95,6 +83,7 @@ public final class Gens extends JavaPlugin {
         gensEvent.stopModeTimer();
         Bukkit.getScheduler().cancelTask(taskId);
     }
+
     public void registerListeners(){
         PluginManager pm = getServer().getPluginManager();
         List<Listener> listeners = Arrays.asList(
@@ -113,22 +102,26 @@ public final class Gens extends JavaPlugin {
         );
         listeners.forEach(listener -> pm.registerEvents(listener, this));
     }
+
     public void registerCommands(){
-        BukkitCommandManager manager = new BukkitCommandManager(this);
-        manager.registerCommand(new Sell());
-        manager.registerCommand(new DebugCMDS());
-        manager.registerCommand(new Reload());
-        manager.registerCommand(new Shop());
-        manager.registerCommand(new Stats());
-        manager.registerCommand(new Admin());
+        PaperCommandManager commandManager = new PaperCommandManager(this);
+        commandManager.enableUnstableAPI("help");
+        commandManager.setFormat(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.WHITE, ChatColor.GRAY));
+        commandManager.registerCommand(new Help());
+        commandManager.registerCommand(new Sell());
+        commandManager.registerCommand(new DebugCMDS());
+        commandManager.registerCommand(new Reload());
+        commandManager.registerCommand(new Shop());
+        commandManager.registerCommand(new Stats());
+        commandManager.registerCommand(new Admin());
     }
+
     public void registerPlaceholders(){
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new GenPlaceholders(this).register();
-            getLogger().info("MyPlaceholderHook has been registered!");
+            getLogger().info("Gens has been registered!");
         } else {
-            getLogger().severe("PlaceholderAPI not found! This plugin requires PlaceholderAPI.");
-            getServer().getPluginManager().disablePlugin(this);
+            getLogger().warning("PlaceholderAPI not found, will not register hooks.");
         }
     }
 }

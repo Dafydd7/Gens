@@ -21,7 +21,7 @@ public class UserConnection implements Listener {
     public UserConnection(Gens plugin){
         this.userData = plugin.getUserData();
         this.genManager = plugin.getGenManager();
-        blockManager = plugin.getBlockManager();
+        this.blockManager = plugin.getBlockManager();
     }
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

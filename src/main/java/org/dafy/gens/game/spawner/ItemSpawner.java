@@ -24,7 +24,6 @@ public class ItemSpawner extends BukkitRunnable {
             Location location = generator.getGenLocation();
             if(location.getWorld() == null) continue; // Skip over the gen if the world is null.
             if(!generator.isPlayerNearby()) continue; //Skip the gen if the player is not near their gens.
-
             //Double check that the generator still exists.
             if(!blockManager.hasBlockPersistentData(location.getBlock(), "Generator") || location.getBlock().getType().isAir()){
                 spawnerManager.removeActiveGenerator(generator);

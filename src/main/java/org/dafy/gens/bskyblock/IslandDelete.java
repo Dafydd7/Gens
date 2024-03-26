@@ -5,7 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.dafy.gens.Gens;
-import org.dafy.gens.config.ConfigManager;
 import org.dafy.gens.game.generator.GenManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.user.User;
@@ -61,7 +60,7 @@ public class IslandDelete implements Listener {
     public void onTeamTransfer(TeamSetownerEvent event) {
         Island island = event.getIsland();
         UUID newOwner = event.getOwner();
-        UUID oldOwner = event.getOldOwner();
+        //UUID oldOwner = event.getOldOwner();
         //Return early if null; this event is triggered by island reset.
         if(newOwner == null) return;
         UUID leftPlayer = event.getPlayerUUID();
@@ -70,7 +69,7 @@ public class IslandDelete implements Listener {
 
     private void deleteIslandGenerators(String islandID, Set<UUID>members) {
         if(members.isEmpty()) return;
-        for (UUID member:members) {
+        for (UUID member : members) {
             deletePlayerGenerators(islandID,member);
         }
     }

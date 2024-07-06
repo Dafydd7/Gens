@@ -1,5 +1,6 @@
 package org.dafy.gens.game.generator.builders;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,21 +20,20 @@ public class DropBuilder implements ItemBuilder{
     private int tier;
 
     public DropBuilder(ConfigurationSection section) {
-        this.dropMaterial = getMaterial(section.getString("material", "stone"));
         setName(section.getString("display.name"));
+        this.dropMaterial = getMaterial(section.getString("material", "stone"));
         setPrice(section.getDouble("price"));
         setLore(section.getStringList("display.lore"));
         setTier(section.getInt("tier"));
     }
 
     public GenDrop build() {
-        GenDrop generatorDrop = new GenDrop();
-        generatorDrop.setDropItem(buildItem());
-        generatorDrop.setDropName(dropName);
-        generatorDrop.setDropLore(dropLore);
-        generatorDrop.setTier(tier);
-        generatorDrop.setPrice(price);
-        return generatorDrop;
+        return new GenDrop()
+                .setDropItem(buildItem())
+                .setDropName(dropName)
+                .setDropLore(dropLore)
+                .setDropTier(tier)
+                .setDropPrice(price);
     }
 
     @Override
@@ -49,8 +49,7 @@ public class DropBuilder implements ItemBuilder{
 
     @Override
     public void setName(String name) {
-        if (name != null)
-            this.dropName = ChatColor.translateAlternateColorCodes('&', name);
+        if (name != null) this.dropName = ChatColor.translateAlternateColorCodes('&', name);
     }
 
     @Override
@@ -76,8 +75,9 @@ public class DropBuilder implements ItemBuilder{
     @Override
     public Material getMaterial(String materialName) {
         try {
-            return Material.valueOf(materialName.toUpperCase(Locale.ENGLISH));
+            return Material.valueOf(materialName.toUpperCase());
         } catch (IllegalArgumentException e) {
+            Bukkit.getLogger().warning(String.format("Failed to load the material for generator %s! Reverting to material STONE.",dropName));
             return Material.STONE;
         }
     }

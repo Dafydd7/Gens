@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.dafy.gens.Gens;
 import org.dafy.gens.game.economy.GenEconomy;
 import org.dafy.gens.game.events.GensEvent;
-import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.generator.GeneratorManager;
 import org.dafy.gens.game.generator.Generator;
 
 import java.util.HashMap;
@@ -16,11 +16,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ShopManager {
-    private final GenManager genManager;
+    private final GeneratorManager generatorManager;
     private final GensEvent gensEvent;
     private final HashMap<ItemStack,Double> sellableItems = new HashMap<>();
     public ShopManager(Gens plugin){
-        genManager = plugin.getGenManager();
+        generatorManager = plugin.getGeneratorManager();
         gensEvent = plugin.getGensEvent();
     }
 
@@ -44,15 +44,15 @@ public class ShopManager {
     }
 
     public void openShopGUI(Player player){
-        int genCount = genManager.genCount();
+        int genCount = generatorManager.genCount();
         int inventorySize = (genCount / 9 + 1) * 9; // Round up to the nearest multiple of 9
         Inventory inventory = Bukkit.createInventory(player, inventorySize, "Generator Shop");
-        if(genManager.isEmpty()) {
+        if(generatorManager.isEmpty()) {
             player.sendMessage(ChatColor.RED + "Error: No gens have been created.\nPlease contact an admin.");
             return;
         }
-        for (Generator generator : genManager.getGenerators()) {
-            inventory.addItem(generator.getGenItem( ));
+        for (Generator generator : generatorManager.getGenerators()) {
+            inventory.addItem(generator.getGeneratorItem());
         }
         player.openInventory(inventory);
     }

@@ -1,4 +1,4 @@
-package org.dafy.gens.placeholder;
+package org.dafy.gens.utility;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -8,10 +8,10 @@ import org.dafy.gens.user.User;
 
 import javax.annotation.Nonnull;
 
-public class GenPlaceholders extends PlaceholderExpansion {
+public class PAPIExpansion extends PlaceholderExpansion {
     private final Gens plugin;
     private final GensEvent gensEvent;
-    public GenPlaceholders(Gens plugin){
+    public PAPIExpansion(Gens plugin){
         this.plugin = plugin;
         this.gensEvent = plugin.getGensEvent();
     }
@@ -25,7 +25,7 @@ public class GenPlaceholders extends PlaceholderExpansion {
     @Nonnull
     @Override
     public String getIdentifier() {
-        return "WildKits";
+        return "Gens";
     }
 
     @Nonnull
@@ -40,19 +40,13 @@ public class GenPlaceholders extends PlaceholderExpansion {
     }
 
     public String onRequest(OfflinePlayer player, @Nonnull String params) {
-        if(params.equalsIgnoreCase("name")) {
-            return player == null ? null : player.getName();
-        }
+        if(player == null) return null;
         User user = plugin.getUserManager().getUser(player.getUniqueId());
-        if(params.equalsIgnoreCase("limit")) {
-            return String.valueOf(user.getGenLimit());
-        }
-        if(params.equalsIgnoreCase("placed")) {
-            return String.valueOf(user.getGensPlaced());
-        }
-        if(params.equalsIgnoreCase("event")) {
-            return gensEvent.getEventName();
-        }
-        return null; // Placeholder is unknown by the Expansion
+        return switch (params){
+            case "limit" -> String.valueOf(user.getGenLimit());
+            case "placed" -> String.valueOf(user.getGensPlaced());
+            case "event" -> gensEvent.getActiveMode().toString();
+            default -> "null";
+        };
     }
 }

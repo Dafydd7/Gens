@@ -16,22 +16,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.dafy.gens.Gens;
 import org.dafy.gens.game.economy.GenEconomy;
-import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.generator.GeneratorManager;
 import org.dafy.gens.game.generator.Generator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class UpgradeGUI implements InventoryHolder, Listener {
-    // Create a new inventory, with "this" owner for comparison with other inventories, a size of nine, called example
     private final Inventory inventory;
     private final UpgradeManager upgradeManager;
-    private final GenManager genManager;
+    private final GeneratorManager generatorManager;
     private final Economy economy;
 
     public UpgradeGUI(Gens plugin) {
         this.upgradeManager = plugin.getUpgradeManager();
-        this.genManager = plugin.getGenManager();
+        this.generatorManager = plugin.getGeneratorManager();
         this.economy = GenEconomy.getEconomy();
         inventory = Bukkit.createInventory(this, 36, "Upgrade GUI");
         inventory.setItem(32,createGuiItem(Material.BARRIER, "§c§lClose GUI", "§8ɢᴇɴᴇʀᴀᴛᴏʀ","", "§eClick to close this GUI."));
@@ -44,7 +43,6 @@ public class UpgradeGUI implements InventoryHolder, Listener {
         return inventory;
     }
 
-    // Nice little method to create a gui item with a custom name, and description
     private ItemStack createGuiItem(Material material, String name, String...lore) {
         ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
@@ -55,7 +53,6 @@ public class UpgradeGUI implements InventoryHolder, Listener {
         return item;
     }
 
-    // You can open the inventory with this
     public void openInventory(Player player, Generator generator) {
         final double genPrice = getUpgradePrice(generator);
         inventory.setItem(13,createGuiItem(Material.AMETHYST_SHARD, "§a§lUpgrade Generator", "§8ɢᴇɴᴇʀᴀᴛᴏʀ","","§8Price: §a$§f" + genPrice, "§eClick to upgrade your generator!") );
@@ -63,7 +60,6 @@ public class UpgradeGUI implements InventoryHolder, Listener {
         upgradeManager.addShopPlayer(player,generator);
     }
 
-    // Check for clicks on items
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if(e.isCancelled()) return;
@@ -82,14 +78,14 @@ public class UpgradeGUI implements InventoryHolder, Listener {
         //This corresponds to the slots that were initialised in UpgradeGUI.class
         switch (e.getRawSlot()){
             case 30:
-                genManager.removeGenerator(generator, player.getUniqueId());
+                generatorManager.removeGenerator(generator, player.getUniqueId());
                 player.closeInventory();
                 return;
             case 32:
                 player.closeInventory();
                 return;
             case 13:
-                if (genManager.isMaxTier(generator.getTier())) {
+                if (generatorManager.isMaxTier(generator.getTier())) {
                     player.sendMessage("Generator is at max tier.");
                     player.closeInventory();
                     return;
@@ -101,10 +97,8 @@ public class UpgradeGUI implements InventoryHolder, Listener {
                 }
                 economy.withdrawPlayer(player, genPrice);
                 player.sendMessage(ChatColor.GREEN + "Upgraded generator to tier " + (generator.getTier() + 1) + " for $" + genPrice + ".");
-                genManager.updateGenerator(generator, player);
+                generatorManager.updateGenerator(generator, player);
                 player.closeInventory();
-            default:
-                return;
         }
     }
     @EventHandler
@@ -115,7 +109,7 @@ public class UpgradeGUI implements InventoryHolder, Listener {
     private double getUpgradePrice(Generator generator){
         int oldTier = generator.getTier();
         int newTier = oldTier + 1;
-        return genManager.getPrice(newTier) - genManager.getPrice(oldTier);
+        return generatorManager.getPrice(newTier) - generatorManager.getPrice(oldTier);
     }
 }
 

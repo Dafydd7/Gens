@@ -1,32 +1,56 @@
 package org.dafy.gens.game.generator;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-@Getter
-@Setter
 @Data
 public class Generator {
     private static final int GEN_RADIUS = 25;
-    private Location genLocation;
-    private Player genOwner;
-    private ItemStack genItem;
+    private Location generatorLocation;
+    private ItemStack generatorItem;
     private ItemStack dropItem;
     private double price;
-    private int delay;
+    private int generatorDelay;
     private int tier;
     private String islandUUID;
 
-    public void minusDelay(){
-        delay -= 1;
+    public Generator setGeneratorItem(ItemStack item){
+        generatorItem = item;
+        return this;
+    }
+    public Generator setGeneratorTier(int tier){
+        this.tier = tier;
+        return this;
+    }
+    public Generator setGeneratorDelay(int delay){
+        this.generatorDelay = delay;
+        return this;
+    }
+    public Generator setGeneratorPrice(double price){
+        this.price = price;
+        return this;
     }
 
-    public boolean isPlayerNearby() {
-        if(genOwner == null) return false;
-        return genOwner.getWorld().equals(genLocation.getWorld()) && genOwner.getLocation().distance(this.genLocation) <= GEN_RADIUS;
+    public Generator setTier(int tier){
+        this.tier = tier;
+        return this;
+    }
+    public Generator setGeneratorLocation(Location location){
+        this.generatorLocation = location;
+        return this;
+    }
+    public Generator setDropItem(ItemStack item) {
+        this.dropItem = item;
+        return this;
+    }
+
+    public void decrementDelay(){
+        generatorDelay -= 1;
+    }
+
+    public boolean isPlayerNearby(Player player) {
+        return player.getWorld().equals(generatorLocation.getWorld()) && player.getLocation().distance(this.generatorLocation) <= GEN_RADIUS;
     }
 }

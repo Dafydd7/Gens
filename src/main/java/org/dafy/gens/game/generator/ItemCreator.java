@@ -14,11 +14,11 @@ import java.util.logging.Level;
 
 public class ItemCreator {
     private final Gens plugin;
-    private final GenManager genManager;
+    private final GeneratorManager generatorManager;
     private final ShopManager shopManager;
     public ItemCreator(Gens plugin){
         this.plugin = plugin;
-        this.genManager = plugin.getGenManager();
+        this.generatorManager = plugin.getGeneratorManager();
         this.shopManager = plugin.getShopManager();
     }
     public void initBuilders() {
@@ -28,7 +28,7 @@ public class ItemCreator {
         ConfigurationSection dropSection = config.getConfigurationSection("Drops.");
         //Clear the maps, in case someone has reloaded.
         shopManager.clearSellableItems();
-        genManager.clearGenerators();
+        generatorManager.clearGenerators();
         //Return early if null.
         if (generatorSection == null || dropSection == null) {
             plugin.getLogger().log(Level.WARNING, "Unable to initialize Generators/Drops - Check your config.yml");
@@ -37,13 +37,13 @@ public class ItemCreator {
         //Initialise all the possible generators, and put them inside a map.
         generatorSection.getKeys(false).forEach(key -> {
             Generator genBuilder = new GenBuilder(generatorSection.getConfigurationSection(key)).build();
-            genManager.addGenerator(genBuilder.getTier(), genBuilder);
+            generatorManager.addGenerator(genBuilder.getTier(), genBuilder);
         });
         //Initialise the generator drops, as well as set them in the generator map.
         dropSection.getKeys(false).forEach(key -> {
              GenDrop genDrop = new DropBuilder(dropSection.getConfigurationSection(key)).build();
              ItemStack genItem = genDrop.getDropItem();
-             genManager.setDropItem(genDrop.getTier(),genItem);
+             generatorManager.setDropItem(genDrop.getTier(),genItem);
              ItemMeta genMeta = genDrop.getDropItem().getItemMeta();
              genMeta.getLore().add(ChatColor.YELLOW + "Click to buy!");
              genItem.setItemMeta(genMeta);

@@ -20,24 +20,26 @@ public class User {
     private int genLimit = 40;
     private List<Generator> generators = new ArrayList<>();
 
-   public void addPlaced(){
+   public void incrementGensPlaced(){
        genLimit -= 1;
        gensPlaced += 1;
    }
-    public void removePlaced(){
+    public void decrementGensPlaced(){
         genLimit += 1;
         gensPlaced -= 1;
     }
 
     public void addGenerator(Generator generator) {
         generators.add(generator);
+        incrementGensPlaced();
     }
 
     public void removeGenerator(Generator generator){
         generators.remove(generator);
+        decrementGensPlaced();
     }
     public void addAndRemove(Generator oldGenerator,Generator newGenerator){
-        generators.remove(oldGenerator);
-        generators.add(newGenerator);
+        removeGenerator(oldGenerator);
+        addGenerator(newGenerator);
     }
 }

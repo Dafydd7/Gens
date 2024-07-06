@@ -1,4 +1,4 @@
-package org.dafy.gens.game.block;
+package org.dafy.gens.game.managers;
 
 import de.tr7zw.nbtapi.NBTBlock;
 import de.tr7zw.nbtapi.NBTItem;

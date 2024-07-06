@@ -1,9 +1,10 @@
-package org.dafy.gens.game.block;
+package org.dafy.gens.game.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.dafy.gens.Gens;
+import org.dafy.gens.game.managers.BlockManager;
 
 public class BlockExplode implements Listener {
     private final BlockManager blockManager;

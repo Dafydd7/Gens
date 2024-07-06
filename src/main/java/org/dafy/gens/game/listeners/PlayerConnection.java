@@ -1,4 +1,4 @@
-package org.dafy.gens.user;
+package org.dafy.gens.game.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,28 +7,28 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.block.BlockManager;
-import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.managers.BlockManager;
+import org.dafy.gens.game.generator.GeneratorManager;
 import org.dafy.gens.game.generator.Generator;
+import org.dafy.gens.user.UserData;
 
 import java.util.concurrent.CompletableFuture;
 
-public class UserConnection implements Listener {
-
+public class PlayerConnection implements Listener {
     private final UserData userData;
-    private final GenManager genManager;
+    private final GeneratorManager generatorManager;
     private final BlockManager blockManager;
-    public UserConnection(Gens plugin){
+    public PlayerConnection(Gens plugin){
         this.userData = plugin.getUserData();
-        this.genManager = plugin.getGenManager();
+        this.generatorManager = plugin.getGeneratorManager();
         this.blockManager = plugin.getBlockManager();
     }
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         if(!player.hasPlayedBefore()){
-            Generator generator = genManager.genFromTier(1);
-            ItemStack genItem = generator.getGenItem();
+            Generator generator = generatorManager.genFromTier(1);
+            ItemStack genItem = generator.getGeneratorItem();
             blockManager.addItemPersistentData(genItem,"GeneratorItem",1);
             player.getInventory().addItem(genItem);
         }
@@ -36,6 +36,6 @@ public class UserConnection implements Listener {
     }
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        CompletableFuture.runAsync(()->userData.saveUser(e.getPlayer().getUniqueId()));
+        CompletableFuture.runAsync(()->userData.saveUser(e.getPlayer().getUniqueId(),true));
     }
 }

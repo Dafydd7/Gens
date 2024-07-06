@@ -7,11 +7,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.dafy.gens.game.block.BlockManager;
-import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.managers.BlockManager;
+import org.dafy.gens.game.generator.GeneratorManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.spawner.SpawnerManager;
 import org.dafy.gens.user.User;
 import org.dafy.gens.user.UserManager;
 
@@ -24,15 +23,13 @@ public class ConfigManager {
 
     private final Gens plugin;
     private final UserManager userManager;
-    private final GenManager genManager;
-    private final SpawnerManager spawnerManager;
+    private final GeneratorManager generatorManager;
     private final BlockManager blockManager;
 
     public ConfigManager(Gens plugin) {
         this.plugin = plugin;
         userManager = plugin.getUserManager();
-        genManager = plugin.getGenManager();
-        spawnerManager = plugin.getSpawnerManager();
+        generatorManager = plugin.getGeneratorManager();
         blockManager = plugin.getBlockManager();
     }
 
@@ -51,10 +48,9 @@ public class ConfigManager {
             int i = 0;
             for (Generator generator : user.getGenerators()) {
                 String generatorPath = String.format(ConfigKeys.GENERATORS_PATH, i);
-                section.set(generatorPath + ".Location", generator.getGenLocation());
+                section.set(generatorPath + ".Location", generator.getGeneratorLocation());
                 section.set(generatorPath + ".Tier", generator.getTier());
                 section.set(generatorPath + ".Island-UUID", generator.getIslandUUID());
-                spawnerManager.removeActiveGenerator(generator);
                 i++;
             }
         }
@@ -90,16 +86,14 @@ public class ConfigManager {
                 Block block = location.getBlock();
                 if(!blockManager.hasBlockPersistentData(block,"Generator")) {
                     section.set(key,null); //Deletes the key, as the generator no longer exists.
-                    user.removePlaced(); //Bring back their stats
+                    user.decrementGensPlaced(); //Bring back their stats
                     blockManager.removeBlockPersistentData(block,"Generator"); //Remove the NBT, so other blocks can now be placed there again.
                     continue;
                 } // Skip over generator, if location is somehow null, or the block has been removed.
                 int tier = genSubSection.getInt("Tier");
-                Generator generator = genManager.createGenerator(location, tier);
-                user.getGenerators().add(generator);
+                Generator generator = generatorManager.createGenerator(location, tier);
                 generator.setIslandUUID(genSubSection.getString("Island-UUID"));
-                generator.setGenOwner(onlinePlayer);
-                spawnerManager.addActiveGenerator(generator);
+                user.getGenerators().add(generator);
             }
         }
         if (!cache) return;
@@ -108,14 +102,14 @@ public class ConfigManager {
     }
 
     public void createUser(File file, User user) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                plugin.getLogger().log(Level.WARNING, "Unable to create user file.");
-                return;
-            }
-            user.setPlayer(Bukkit.getPlayer(user.getUuid()));
-            userManager.cacheUser(user);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Unable to create user file.");
+            return;
         }
+        user.setPlayer(Bukkit.getPlayer(user.getUuid()));
+        userManager.cacheUser(user);
+    }
 }

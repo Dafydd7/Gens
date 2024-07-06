@@ -1,42 +1,28 @@
 package org.dafy.gens.game.events;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.generator.GeneratorManager;
 import org.dafy.gens.game.generator.Generator;
+import org.dafy.gens.utility.Language;
 
 public class GensEvent {
     private final Gens plugin;
-    private final GenManager genManager;
-    private final String inactiveEventMessage;
-    private final String upgradeEventMessage;
-    private final String doubleEventMessage;
-    private final String sellEventMessage;
+    private final GeneratorManager generatorManager;
+    @Getter @Setter
+    private EventState activeMode = EventState.INACTIVE;
     private final int modeIntervalInteger;
     private final int eventInterval;
+    private int modeTaskId;
 
     public GensEvent(Gens plugin){
         this.plugin = plugin;
-        genManager = plugin.getGenManager();
-        //init event strings
-        inactiveEventMessage = plugin.getConfig().getString("Inactive-Event-Message", "&aEvent: Now inactive.");
-        upgradeEventMessage = plugin.getConfig().getString("Upgrade-Event-Message", "&aEvent: Upgrade drop");
-        doubleEventMessage = plugin.getConfig().getString("Double-Event-Message", "&aEvent: Double drop.");
-        sellEventMessage = plugin.getConfig().getString("Sell-Event-Message", "&aEvent: Sell Event.");
-        //& init mode intervals.
+        generatorManager = plugin.getGeneratorManager();
+        //init mode intervals.
         modeIntervalInteger = plugin.getConfig().getInt("Mode-Selection-Interval",1);
         eventInterval = plugin.getConfig().getInt("Event-Interval",1);
-        init();
-    }
-
-    @Getter
-    private EventState activeMode = EventState.INACTIVE;
-    private int modeTaskId;
-
-    private void init() {
-        // Start the mode selection timer (15 minutes)
         startModeSelectionTimer();
     }
 
@@ -47,60 +33,37 @@ public class GensEvent {
         }
         // Start a new mode selection task (15 minutes interval)
         modeTaskId = Bukkit.getScheduler().runTaskLater(plugin, this::changeActiveModeRandomly, 20L * 60 * modeIntervalInteger).getTaskId();
-        broadcastMessage(inactiveEventMessage);
+        Bukkit.broadcastMessage(Language.EVENT_INACTIVE.toString());
     }
 
     public void getModeAndDrop(Generator generator){
         switch (activeMode){
-            //Drops the item from the tier above.
-            case UPGRADE_DROP -> genManager.dropUpgradedNaturally(generator);
-            case DOUBLE_DROP -> genManager.dropItemNaturally(generator,2);
-            case INACTIVE, SELL_EVENT -> genManager.dropItemNaturally(generator,1);
+            case UPGRADE_DROP -> generatorManager.dropItemNaturally(generator,1,true);
+            case DOUBLE_DROP -> generatorManager.dropItemNaturally(generator,2,false);
+            case INACTIVE, SELL_EVENT -> generatorManager.dropItemNaturally(generator,1,false);
         }
     }
 
     private void stopEvent() {
         // Set the active mode state to INACTIVE.
         setActiveMode(EventState.INACTIVE);
-
         // Start the mode selection timer again.
         startModeSelectionTimer();
     }
 
     private void changeActiveModeRandomly() {
-        EventState newMode = EventState.getRandomMode();
+        EventState newMode = EventState.getRandomEventMode();
         setActiveMode(newMode);
-
         switch (activeMode) {
-            case UPGRADE_DROP ->
-                    broadcastMessage(upgradeEventMessage);
-            case DOUBLE_DROP ->
-                    broadcastMessage(doubleEventMessage);
-            case SELL_EVENT ->
-                    broadcastMessage(sellEventMessage);
+            case UPGRADE_DROP -> Bukkit.broadcastMessage(Language.EVENT_UPGRADE.toString());
+            case DOUBLE_DROP -> Bukkit.broadcastMessage(Language.EVENT_DOUBLE.toString());
+            case SELL_EVENT -> Bukkit.broadcastMessage(Language.EVENT_SELL.toString());
         }
-            startGeneratorTask();
-    }
-
-    private void broadcastMessage(String msg){
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&',msg));
-    }
-
-    public String getEventName() {
-        return switch (activeMode) {
-            case UPGRADE_DROP -> "Upgrade Drop.";
-            case DOUBLE_DROP -> "Double Drop.";
-            case SELL_EVENT -> "Sell Event.";
-            default -> "Inactive.";
-        };
+        startGeneratorTask();
     }
 
     private void startGeneratorTask() {
         Bukkit.getScheduler().runTaskLater(plugin, this::stopEvent, 20L * 60 * eventInterval);
-    }
-
-    private void setActiveMode(EventState newMode) {
-        activeMode = newMode;
     }
 
     public boolean isSellMode(){

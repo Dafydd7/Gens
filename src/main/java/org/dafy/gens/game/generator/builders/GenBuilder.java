@@ -1,5 +1,6 @@
 package org.dafy.gens.game.generator.builders;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,8 +21,8 @@ public class GenBuilder implements ItemBuilder {
     private int tier;
 
     public GenBuilder(ConfigurationSection section) {
-        this.genMaterial = getMaterial(section.getString("material", "stone"));
         setName(section.getString("display.name"));
+        this.genMaterial = getMaterial(section.getString("material", "STONE"));
         setPrice(section.getInt("price"));
         setDelay(section.getInt("delay"));
         setLore(section.getStringList("display.lore"));
@@ -29,12 +30,11 @@ public class GenBuilder implements ItemBuilder {
     }
 
     public Generator build() {
-        Generator generator = new Generator();
-        generator.setGenItem(buildItem());
-        generator.setTier(tier);
-        generator.setDelay(genDelay);
-        generator.setPrice(price);
-        return generator;
+        return new Generator()
+                .setGeneratorItem(buildItem())
+                .setGeneratorTier(tier)
+                .setGeneratorDelay(genDelay)
+                .setGeneratorPrice(price);
     }
     @Override
     public ItemStack buildItem() {
@@ -52,6 +52,7 @@ public class GenBuilder implements ItemBuilder {
         this.tier = tier;
     }
 
+    @Override
     public void setPrice(double price) {
         this.price = price;
     }
@@ -63,8 +64,9 @@ public class GenBuilder implements ItemBuilder {
     @Override
     public Material getMaterial(String materialName) {
         try {
-            return Material.valueOf(materialName.toUpperCase(Locale.ENGLISH));
+            return Material.valueOf(materialName.toUpperCase());
         } catch (IllegalArgumentException e) {
+            Bukkit.getLogger().warning(String.format("Failed to load the material for generator %s! Reverting to material STONE.",genName));
             return Material.STONE;
         }
     }

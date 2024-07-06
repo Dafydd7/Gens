@@ -19,15 +19,4 @@ public class UpgradeManager implements Listener {
         generatorShopMap.remove(player);
     }
 
-
-//    public static Inventory UPGRADE(Player player, Generator generator) {
-//        ItemStack generatorGenItem = generator.getGenItem();
-//        Inventory upgradeInventory = Bukkit.createInventory(player, UPGRADE_INVENTORY_SIZE, UPGRADE_INVENTORY_TITLE);
-//        upgradeInventory.setItem(13, generatorGenItem);
-//        upgradeInventory.setItem(30, getRemoveItem());
-//        upgradeInventory.setItem(32, CLOSE_ITEM);
-//        player.openInventory(upgradeInventory);
-//        return upgradeInventory;
-//    }
-
 }

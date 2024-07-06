@@ -5,9 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class UserManager {
-
-    public UserManager(){
-    }
     private final HashMap<UUID, User> userHashMap = new HashMap<>();
     public void cacheUser(User user){
         userHashMap.put(user.getUuid(),user);

@@ -1,0 +1,8 @@
+# Set the prefix to '' if you wish for it to be empty.
+prefix: '&b&lGENS &f»'
+event-inactive: '&fThe event has now ended!'
+event-upgrade: '&fAn &bUpgrade Event &fhas begun! All generator drops will increase by &b1 tier&f.'
+event-sell: '&fA &b2x Sell Event &fhas started! All drops are now worth 2x the original price.'
+event-double: '&fA &b2x Drops Event &fhas started! All drops are now doubled.'
+no-sellable-items: '&fYou do not have any generator drops to sell.'
+do-not-own-generator: '&fYou cannot interact with this generator as you do not own it!'

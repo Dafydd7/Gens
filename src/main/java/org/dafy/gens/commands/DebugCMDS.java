@@ -25,9 +25,9 @@ public class DebugCMDS extends BaseCommand {
     }
 
     @Subcommand("giveTier")
-    public void giveDefault(Player player){
-        Generator generator = plugin.getGenManager().genFromTier(1);
-        ItemStack genItem = generator.getGenItem();
+    public void giveDefault(Player player,int tier){
+        Generator generator = plugin.getGeneratorManager().genFromTier(tier);
+        ItemStack genItem = generator.getGeneratorItem();
         plugin.getBlockManager().addItemPersistentData(genItem,"GeneratorItem",1);
         player.getInventory().addItem(genItem);
     }

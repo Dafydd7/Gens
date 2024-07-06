@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.block.BlockManager;
+import org.dafy.gens.game.managers.BlockManager;
 import org.dafy.gens.game.shop.ShopManager;
 
 public class SellwandListener implements Listener {
@@ -29,7 +29,7 @@ public class SellwandListener implements Listener {
         //Get the players item in hand.
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && !player.isSneaking()) return;
-        if(itemInHand == null || itemInHand.getType().equals(Material.AIR)) return;
+        if(itemInHand.getType().equals(Material.AIR)) return;
         Block clickedBlock = e.getClickedBlock();
         //Return early, if block was null,or not a chest.
         if(clickedBlock == null || clickedBlock.getType() != Material.CHEST) return;

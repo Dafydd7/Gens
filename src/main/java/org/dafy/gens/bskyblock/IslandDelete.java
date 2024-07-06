@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.dafy.gens.Gens;
-import org.dafy.gens.game.generator.GenManager;
+import org.dafy.gens.game.generator.GeneratorManager;
 import org.dafy.gens.game.generator.Generator;
 import org.dafy.gens.user.User;
 import org.dafy.gens.user.UserManager;
@@ -19,15 +19,14 @@ import java.util.Set;
 import java.util.UUID;
 
 public class IslandDelete implements Listener {
-
-    private final GenManager genManager;
+    private final GeneratorManager generatorManager;
     private final UserManager userManager;
     private final Gens plugin;
 
     public IslandDelete(Gens plugin) {
         this.plugin = plugin;
         userManager = plugin.getUserManager();
-        genManager = plugin.getGenManager();
+        generatorManager = plugin.getGeneratorManager();
     }
 
     @EventHandler
@@ -81,7 +80,7 @@ public class IslandDelete implements Listener {
             User cachedUser = userManager.getUser(player);
             for (Generator generator : cachedUser.getGenerators()) {
                 if (!generator.getIslandUUID().equals(islandUUID)) continue;
-                Bukkit.getScheduler().runTask(plugin, () -> genManager.deleteIslandGenerator(generator, cachedUser.getUuid()));
+                Bukkit.getScheduler().runTask(plugin, () -> generatorManager.deleteIslandGenerator(generator, cachedUser.getUuid()));
             }
         }
     }

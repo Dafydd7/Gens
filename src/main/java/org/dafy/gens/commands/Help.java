@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 @CommandAlias("Gens")
 public class Help extends BaseCommand {
-    @Default @Description("Displays a list of all commands available for the generator plugin.")
+    @Default @Description("Displays a list of all commands available for the gens plugin.")
     public void onCommandHelp(CommandSender sender, CommandHelp help){
         help.showHelp();
     }

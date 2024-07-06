@@ -9,7 +9,7 @@ import org.dafy.gens.Gens;
 import org.dafy.gens.user.User;
 
 @CommandAlias("Gens")
-public class Admin extends BaseCommand {
+public class GeneratorLimit extends BaseCommand {
     @Dependency
     private Gens plugin;
     @CommandPermission("gens.commands.admin.give")
